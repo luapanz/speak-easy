@@ -1,0 +1,239 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-5">
+      <h5 class="location-header">Team Members</h5>
+    </div>
+    <!-- <div class="col-3">
+      <%= form_tag agents_path, :class => "form-row", method: :get do %>
+        <div class="input-group input-group-focus">
+          <%= text_field_tag :search, params[:search], placeholder: "Search", class: "form-control form-control-lg" %>
+          <span class="input-group-append">
+            <%= submit_tag "Go!", class: "btn btn-primary"  %>
+          </span>
+        </div>
+      <% end %>
+    </div> -->
+    <div class="col-7">
+      <a href="<%= agents_invite_url %>" class="btn btn-primary new-location-button float-right" style="margin-right: 10px;">
+        + Create Team Invite Link
+      </a>
+      <a href="<%= new_agent_path %>" class="btn btn-primary new-location-button float-right" style="margin-right: 10px;">
+        + Invite Individual Member
+      </a>
+    </div>
+  </div>
+  <hr class="location_line"/>
+  <div class="row">
+    <% if @agents.present? %>
+      <div class="card card-tabbed">
+        <div class="card-header bg-dark text-white">
+          <h6>Team Members</h6>
+        </div>
+        <div class="card-body">
+          <div class="tab-content">
+            <div id="one" class="tab-pane fade show active" role="tabpanel1" aria-labelledby="one">
+              <table class="table campaign-table table-sm font-size-small">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th><center><%= sortable "firstname", "Name" %></center></th>
+                      <th><center><%= sortable "role", "Role" %></center></th>
+                      <th><center><%= sortable "locations", "Location" %></center></th>
+                      <th><center><%= sortable "is_active", "Status" %></center></th>
+                      <th><center>Edit User</center> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="font-weight:bold">
+                      <% if @user.photo_url.present? %>
+                        <td><img style="margin-top: 5px; margin-bottom: 5px;" class="rounded-circle profile-image hoverZoomLink" width="45" height="45" data-turbolinks-permanent="true" src="<%= @user.photo_url %>" alt="No photo"></td>
+                      <% else %>
+                        <td><img style="margin-top: 5px; margin-bottom: 5px;" class="rounded-circle profile-image hoverZoomLink" width="45" height="45" data-turbolinks-permanent="true" src="<%= image_path('no_photo3x.png') %>" alt="No photo"></td>
+                      <% end %>
+                      <td><center><%= @user.firstname %> <%= @user.lastname %></center></td>
+                      <td><center><%= Role::get_role_label(@user.role) %></center></td>
+                      <td>
+                        <center>
+                          <% if @user.role == Role::OWNER || @user.role == Role::MARKETING || @user.role == Role::HR || @user.role == Role::FINANCE || @user.role == Role::MANAGER %>
+                            Executive
+                          <% else %>
+                            <%= location_to_user_relations(@locations, @user.locations).presence || 'N/A' %>
+                          <% end %>
+                        </center>
+                      </td>
+                      <td>
+                        <% if @user.is_active %>
+                          <center><h6 class="agent-active">Active</h6></center>
+                        <% else %>
+                          <center><h6 class="agent-inactive">Inactive</h6></center>
+                        <% end %>
+                      </td>
+                      <td><a href="<%= account_path %>"><center>Edit</center></a></td>
+                    </tr>
+                    <% @agents.each_with_index do |agent, index| %>
+                        <tr>
+                          <% if agent.photo_url.present? %>
+                            <td><img style="margin-top: 5px; margin-bottom: 5px;" class="rounded-circle profile-image hoverZoomLink" width="45" height="45" data-turbolinks-permanent="true" src="<%= agent.photo_url %>" alt="No photo"></td>
+                          <% else %>
+                            <td><img style="margin-top: 5px; margin-bottom: 5px;" class="rounded-circle profile-image hoverZoomLink" width="45" height="45" data-turbolinks-permanent="true" src="<%= image_path('no_photo3x.png') %>" alt="No photo"></td>
+                          <% end %>
+                          <td><center> <%= agent.firstname + " " + agent.lastname %></center></td>
+                          <td>
+                            <center> <%= Role::get_role_label(agent.role) %></center>
+                          </td>
+                          <td>
+                            <center>
+                              <% if agent.role == Role::OWNER || agent.role == Role::MARKETING || agent.role == Role::HR || agent.role == Role::FINANCE || agent.role == Role::MANAGER %>
+                                Executive
+                              <% else %>
+                                <%= location_to_user_relations(@locations, agent.locations) %>
+                              <% end %>
+                            </center>
+                          </td>
+                          <td>
+                            <% if agent.is_active %>
+                              <h6 class="agent-active"><center>Active</center></h6>
+                            <% else %>
+                              <h6 class="agent-inactive"><center>Inactive</center></h6>
+                            <% end %>
+                          </td>
+                          <td> <a href="<%= edit_agent_path(agent) %>"><center>Edit</center></a> </td>
+                        </tr>
+                    <% end %>
+                  </tbody>
+              </table>
+              <div style="margin-top: 15px;">
+                <%= paginate @agents, param_name: :agents %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <%= render partial: 'agents/agent_card' %>
+      <div class="col-6 col-md-4" style="margin-bottom: 20px;">
+        <div class="card h-100 d-flex flex-column justify-content-between">
+          <div class="row equal no-gutters">
+            <div class="col-4">
+              <div style="height: 100%;">
+                <img
+                  src="<%= image_path('no_photo3x.png')%>"
+                  class="mini-card-image"
+                  alt="Team Member Image"
+                />
+              </div>
+            </div>
+            <div class="col-8" style="padding-left: 20px; padding-right: 10px;">
+              <h4> It's just you! </h4>
+              <p> Add a Team Member to help start distributing your campaigns and grow your business</p>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="importCsvModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <%= simple_form_for @agent,
+                          :html => {:class => 'form-horizontal csv-import-form'},
+                          wrapper: :horizontal_form,
+                          wrapper_mappings: {
+                              file: :horizontal_file_input,
+                              boolean: :horizontal_boolean
+                          } do |f| %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Import members</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Template file</label>
+          <div class="col-sm-8">
+            <a href="/agent_template.csv" target="_blank">Download and fill your data before uploading</a>
+          </div>
+        </div>
+        <div style="padding-left: 15px; padding-right: 50px;">
+          <%= f.input :location_id,
+                      :collection => @locations_,
+                      :label_method => :name,
+                      :value_method => :id,
+                      :label => 'Location',
+                      :include_blank => false,
+                      :include_hidden => false,
+                      :multiple => false,
+                      input_html: {multiple: false},
+                      :required => true
+          %>
+        </div>
+        <%= f.input :csv_import, input_html: {:class => 'csv_import'}, as: :hidden %>
+
+        <div class="form-group file optional">
+          <label class="col-sm-4 control-label file optional" for="csv-file">CSV File</label>
+          <div class="col-sm-8">
+            <input class="file optional csv-file" type="file" accept=".csv" id="csv-file">
+            <div class="csv_errors">
+              <span class="csv_errors_text"  aria-hidden="true" data-toggle="tooltip"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Importing..." id="importCsv">Import</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelImportCsv">Cancel</button>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script src = "https://deploy.userpilot.io/24xk34u10.js"></script>
+<script>
+  userpilot.identify(
+
+    "<%= @user.objectId %>", // Used to identify users
+    {
+     name: "<%= @user.firstname %> <%= @user.lastname %>", // Full name
+     email: "<%= @user.email %>",
+     created_at: "<%= @user.createdAt %>"// Email address
+    }
+  );
+</script>
+
+<!--Script for table-->
+<script>
+$(function() {
+  $('a[data-toggle="tab"]').on('click', function(e) {
+      window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+  });
+  var activeTab = window.localStorage.getItem('activeTab');
+  if (activeTab) {
+      $('#my_tabs a[href="' + activeTab + '"]').tab('show');
+      window.localStorage.removeItem("activeTab");
+  }
+});
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="noLocationModal" tabindex="-1" role="dialog" aria-labelledby="Missing Location">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Missing a Location</h4>
+      </div>
+      <div class="modal-body">
+        <p class="card-text">
+          Before you can add a Team Member you must create a Location.
+          To do this, simply go to the left side of your web page and click on Locations.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="noLocationAccept">Done</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h5 class="location-header">Edit</h5>
+    </div>
+  </div>
+  <hr class="dashboard_line"/>
+  <%= render 'form' %>
+</div>
+<script src = "https://deploy.userpilot.io/24xk34u10.js"></script>
+<script>
+  userpilot.identify(
+
+    "<%= @user.objectId %>", // Used to identify users
+    {
+     name: "<%= @user.firstname %> <%= @user.lastname %>", // Full name
+     email: "<%= @user.email %>",
+     created_at: "<%= @user.createdAt %>"// Email address
+    }
+  );
+</script>

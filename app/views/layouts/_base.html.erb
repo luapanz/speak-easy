@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<%= html_tag :lang => "en" do %>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <%# Turbolinks... sigh. If you're going to remove this line, please make sure you know what
+      you're doing. Please read very carefully: https://github.com/turbolinks/turbolinks %>
+    <meta name="turbolinks-cache-control" content="no-cache">
+
+    <title><%= page_title %></title>
+
+    <%= csrf_meta_tags %>
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <%= stylesheet_link_tag "application", media: "all", 'data-turbolinks-track': 'reload'%>
+    <%= stylesheet_link_tag "https://cdn.quilljs.com/1.0.4/quill.snow.css", "https://cdn.quilljs.com/1.0.4/quill.snow.css", media: "screen"%>
+    <%= javascript_include_tag 'https://cdn.pagesense.io/js/speakeasy/9f3a42c9ff114ad3806bf857959032a5.js' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= yield :styles %>
+    <%= render 'layouts/external_js_libs' %>
+    <%= yield :external_js_libs %>
+
+    <%= csrf_meta_tags %>
+
+    <%= yield :javascript %>
+    <%= yield :head %>
+  </head>
+  <body class='<%= @body_class %>' data-js-libs='bootstrap fitie metis forms sidenav prism clipboard bs-switch <%= yield :js_libs %>'>
+
+    <!-- <div class="container-fluid">
+      <div class="row">
+        <%= flash_messages %>
+      </div>
+    </div> -->
+    <%= yield %>
+
+    <!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/5658839.js"></script>
+<!-- End of HubSpot Embed Code -->
+  </body>
+<% end %>

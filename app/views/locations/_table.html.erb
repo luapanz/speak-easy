@@ -1,0 +1,115 @@
+<div class="card card-tabbed  ">
+  <div class="card-header bg-dark text-white">
+    <h6>Locations</h6>
+    <ul class="nav nav-tabs nav-tabs-primary card-header-tabs" id="my_tabs" role="tablist">
+      <li class = "nav-item active">
+        <a href="#one" class="nav-link active text-white" data-toggle="tab" role="tab" aria-controls="one" aria-expanded="true">
+        Active
+        </a>
+      </li>
+      <li class = "nav-item">
+        <a href="#two" class="nav-link text-white" data-toggle="tab" role="tab" aira-controls="two" aria-expanded="false">
+        Inactive
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    <div class="tab-content">
+      <div id="one" class="tab-pane fade show active" role="tabpanel1" aria-labelledby="one">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @active_locations.present? %>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th><center>Phone</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @active_locations.each do |location| %>
+                  <tr>
+                    <td data-name='ellipsis'>
+                      <a href="<%= edit_location_path(location) %>"><%= location.name %></a>
+                    </td>
+                    <% if location.address.present? %>
+                      <td><%= location.street %> <%= location.city %>, <%= location.state %> <%= location.zip %></td>
+                    <% else %>
+                      <td> </td>
+                    <% end %>
+                    <% if location.phone.present? %>
+                      <td><center><%= location.phone %></center></td>
+                    <% else %>
+                      <td> </td>
+                    <% end %>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>Create an active location to get started</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+          <%= paginate @active_locations, :params => {:tab => "one"}, param_name: :active%>
+        </div>
+      </div>
+
+      <div id="two" class="tab-pane fade" role="tabpanel1" aria-labelledby="two">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @inactive_locations.present? %>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th><center>Phone</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @inactive_locations.each do |location| %>
+                  <tr>
+                    <td data-name='ellipsis'>
+                      <a href="<%= edit_location_path(location) %>"><%= location.name %></a>
+                    </td>
+                    <% if location.address.present? %>
+                      <td><%= location.street %> <%= location.city %>, <%= location.state %> <%= location.zip %></td>
+                    <% else %>
+                      <td> </td>
+                    <% end %>
+                    <% if location.phone.present? %>
+                      <td><center><%= location.phone %></center></td>
+                    <% else %>
+                      <td></td>
+                    <% end %>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>No Inactive Locations</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+          <%= paginate @inactive_locations, :params => {:tab => "two"}, param_name: :future%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(function() {
+    $('a[data-toggle="tab"]').on('click', function(e) {
+        window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = window.localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('#my_tabs a[href="' + activeTab + '"]').tab('show');
+        window.localStorage.removeItem("activeTab");
+    }
+});
+</script>

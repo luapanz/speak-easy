@@ -1,0 +1,53 @@
+<% if current_user && include_menu? && params[:controller] != 'extra' %>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/campaigns" style="padding-top: 0">
+            <img src="<%= image_path('nav_logo.png') %>" alt="SpeakEasy">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="main-menu">
+
+          <% if is_owner? %>
+              <ul class="nav navbar-nav">
+                <li class="<%= 'active' if params[:controller] == 'campaigns' && params[:action] != 'new' %>"><a href="/campaigns">Dashboard</a></li>
+                <li class="<%= 'active' if params[:controller] == 'agents' %>"><a href="/agents">Team Members</a></li>
+                <% if is_owner? %>
+                  <li class="<%= 'active' if params[:controller] == 'campaigns' && params[:action] == 'new' %>">
+                    <a href="/campaigns/new"><span class="nav_create_campaign">Create Campaign</span></a></li>
+                <% end %>
+              </ul>
+          <% end %>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://intercom.help/speakeasy-b0cd81801343" target="_blank">Resources</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle"
+                 data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Welcome, <%= current_user.firstname %>&nbsp;&nbsp;<img src="<%= image_path('settings-icon.png') %>" width="20" height="20"/>
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Account', account_url %></li>
+                <li><%= link_to 'Change Password', password_url %></li>
+                <% if is_owner? %>
+                  <li><%= link_to 'Business Settings', business_url %></li>
+                  <li><a href="https://justspeakeasy.com/my-account">Billing Settings</a></li>
+                <% end %>
+                <li><a href="/locations">Locations</a></li>
+                <li><%= link_to 'Logout', logout_url %></li>
+              </ul>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+    </nav>
+<% end %>

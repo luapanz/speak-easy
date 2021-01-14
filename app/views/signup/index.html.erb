@@ -1,0 +1,123 @@
+<div class="container-fluid signup_main">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="card signup-card">
+      <div class="row h-100">
+        <div class="col-12 col-md-4 signup-left">
+          <div class="signup-image-wrap">
+            <img src="<%= asset_path('nav_logo_white.png') %>" class="signup-image">
+          </div>
+          <div class="signup-description">
+            <p class="signup-text">
+              To start your new account, please provide your basic personal and business information.
+              This will be used inside of your account, on your marketing page, and when inviting new
+              Team Members to your platform.
+            </p>
+          </div>
+        </div>
+        <div class="col-12 col-md-8 signup-right">
+          <div class="signup-form">
+            <div class="row justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
+              <h4>Create New Account</h4>
+            </div>
+            <%= simple_form_for @user,
+                                :url => 'signup/update',
+                                :method => :put,
+                                :html => {:class => 'user-form', id: :payment_form},
+                                wrapper: :vertical_form do |f| %>
+
+              <div class="row signup-form-row">
+                <div class="col-12 col-md-6">
+                    <%= f.input_field :business_name, label: false, :placeholder => "Business Name", :required => true, :class => "signup-input" %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="signup-input-only-mobile">
+                    <%= f.input_field :phone, label: false, :placeholder => "Business Phone", :required => true, :class => "signup-input signup_phone" %>
+                  </div>
+                </div>
+              </div>
+              <div class="row signup-form-row">
+                <div class="col-12 col-md-6">
+                  <div class=signup-input-wrapper>
+                    <%= f.input_field :firstname, label: false, :placeholder => "First Name", :required => true, :class => "signup-input" %>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class=signup-input-wrapper>
+                    <%= f.input_field :lastname, label: false,  :placeholder => "Last Name",  :required => true, :class => "signup-input" %>
+                  </div>
+                </div>
+              </div>
+              <div class="row signup-form-row">
+                <div class="col-12">
+                  <div class=signup-input-wrapper>
+                    <%= f.input_field :email, label: false, :placeholder => "Email", :required => true, :class => "signup-input" %>
+                  </div>
+                </div>
+              </div>
+              <div class="row signup-form-row">
+                <div class="col-12 col-md-6">
+                  <div class=signup-input-wrapper>
+                    <%= f.input_field :password, label: false, :placeholder => "Password", :required => true, :input_html => {:minlength => 6 }, :class => "signup-input"%>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div style="padding-top: 32px;">
+                    <label>
+                      <input type="checkbox" required id="hide-password" checked/> Hide Password
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row signup-form-row">
+                <div class="col-12 col-md-6">
+                  <div class=signup-input-wrapper>
+                    <%= f.input_field :coupon, label: false, :placeholder => "Coupon", :required => false, :class => "signup-input"%>
+                  </div>
+                </div>
+              </div>
+              <div class="row signup-form-row justify-content-center">
+                <div class=signup-input-wrapper>
+                  <label>
+                    <input type="checkbox" required id="tos_accept_check" name="user[tos_version]" /> I accept the
+                    <a href="#" data-toggle="modal" data-target="#TOSModal">Terms and Conditions</a> and <a class="privacyPolicy" href="/legal/privacy" target="_blank">Privacy Policy</a>
+                  </label>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <%= f.button :submit, 'Sign Up', :class => 'btn signup-button'%>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="TOSModal" tabindex="-1" role="dialog" aria-labelledby="Terms of Service Modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Terms Of Service</h4>
+      </div>
+      <div class="modal-body">
+        <% cache do %>
+            <%
+              c = ParseResource::ParseConfig.config
+              tos_version   = c['params']['current_tos_version'] || 1
+              terms = Terms.where(:version => tos_version).first
+            %>
+            <% if terms.present? %>
+                <%= simple_format(terms.text) %>
+            <% end %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="tos_accept">Accept</button>
+      </div>
+    </div>
+  </div>
+</div>

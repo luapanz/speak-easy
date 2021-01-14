@@ -1,0 +1,12 @@
+env.parse_app_id = GGoRYuDhntlY4DvTF7MFfEdQ73gGqg9YViQuuGd3
+env.parse_master_key = JK6taIH02WkBaHRzildGYme3fFQYJj40n7XFhDJA
+env.parser_server_url = http://127.0.0.1:1337/parse
+
+env.cloudinary_cloud_name = pulls
+env.cloudinary_api_key = 565576631873624
+env.cloudinary_api_secret = P-deNON2gBoPWa31ND0LH5zM3ZE
+env.cloudinary_enhance_image_tag = 1
+env.cloudinary_static_image_support = 0
+env.cloudinary_folder = Development
+
+env.secret_key_base = 0c0e7de4db2da00f187bb31fc7551477a158eb14335e3471db77b7a4464e9536ad4d30bc33c09988b9a60cb98c64763cdca2f999adad74d0d1312306fad09192

@@ -1,0 +1,196 @@
+// Place all the styles related to the signup controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.agent-label {
+  font-weight: bold;
+  font-size: 12px;
+  margin-left: 4px;
+  margin-top: 10px;
+}
+
+.agent-active {
+  color: #4CAF50;
+}
+
+.agent-inactive {
+  color: #F44336;
+}
+
+.agent-image {
+  max-width: 175px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.logo-area {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media only screen and (max-width: 600px){
+    height: 250px;
+    margin-top: -15px;
+  }
+}
+
+.enroll-logo {
+  width: 90%;
+
+  @media only screen and (max-width: 600px){
+    width: 100%;
+  }
+}
+
+.enroll-detail-area {
+  border-left: 1px solid #212121;
+  padding-left: 100px;
+  padding-right: 100px;
+
+  @media only screen and (max-width: 600px){
+    border: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.enroll-message {
+  margin-top: 50px;
+
+  @media only screen and (max-width: 600px){
+    margin-top: -20px;
+    width: 100%;
+  }
+}
+
+.enroll-phone-message {
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
+
+  @media only screen and (max-width: 600px){
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+.enroll-privacy{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-left: -110px;
+
+  @media only screen and (max-width: 600px){
+    position: relative;
+    margin-left: 0px;
+    margin-top: 50px;
+  }
+}
+
+.enroll-speakeasy{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-right: 100px;
+
+  @media only screen and (max-width: 600px){
+    position: relative;
+    margin-right: 0px;
+    margin-top: 20px;
+  }
+}
+
+.detail-area {
+  border-left: 1px solid #212121;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  @media only screen and (max-width: 600px){
+    border: none;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.logo-center {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+}
+
+.agents-business-logo {
+  width: 75%;
+}
+
+.agents-logo-button{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.agents-red{
+  color: #C62828;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.agents-black{
+  color: #212121;
+  font-size: 14px;
+}
+
+.agents-textarea {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.agents-checkbox{
+  text-align: center;
+  font-size: 11px;
+
+  @media screen and (max-width: 600px){
+    margin-left: 10px;
+  }
+}
+
+.agents-submit{
+  width: 200px;
+  margin-top: 30px;
+  border-radius: 10px;
+
+  @media screen and (max-width: 600px){
+    width: 300px;
+  }
+}
+
+.agents-submit-mobile{
+  width: 200px;
+  margin-top: 30px;
+  border-radius: 10px;
+
+  @media screen and (max-width: 600px){
+    width: 300px;
+  }
+}
+
+.speak-easy-message {
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: 40px;
+}
+
+#inviteCanvas{
+  margin-top: 15px;
+  border: 1px solid #212121;
+  height: 500px;
+  width: 100%;
+  cursor: default;
+
+  img {
+    max-width: 100%;
+  }
+}

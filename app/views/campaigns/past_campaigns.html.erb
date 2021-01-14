@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col">
+    <h5 class="dashboard-header">Past Campaigns</h5>
+  </div>
+</div>
+<hr class="dashboard_line"/>
+<% if @past_campaigns.present? %>
+  <div class ="row">
+    <% @past_campaigns.each do |campaign| %>
+      <% if DateTime.now > campaign.run_date %>
+      <div class="col-12 col-md-3">
+        <div class="card">
+          <div style="height: 100%;">
+            <% if campaign.photo_url.present? %>
+              <img
+                src="<%= campaign.photo_url %>"
+                class="new-campaign-image-card-image"
+                alt="Campaign Image"
+              />
+            <% else %>
+              <img
+                src="<%= asset_path('generic_campaign.png') %>"
+                alt="Campaign Image"
+              />
+            <% end %>
+          </div>
+          <div class="new-campaign-image-card-bottom-box">
+            <h6 style="overflow: hidden; white-space: nowrap;">
+              <% if campaign.offer_title.present? %>
+                <a class="new-campaign-image-card-bottom-text" href="<%= campaign_path(campaign) %>"><%= campaign.offer_title %></a>
+              <% else %>
+                <a class="new-campaign-image-card-bottom-text" href="<%= campaign_path(campaign) %>">Campaign</a>
+              <% end %>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="paginate-buttons">
+    <div style="display: inline-block;">
+      <%= paginate @past_campaigns, :param_name => 'past' %>
+    </div>
+  </div>
+  <% else %>
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <div class="card h-100 d-flex flex-column justify-content-between">
+        <div class="card-body">
+          <h5 class="card-title">No past campaigns</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

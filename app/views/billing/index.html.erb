@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <h5 class="location-header">Subscription</h5>
+    </div>
+  </div>
+  <hr class="location_line"/>
+  <% if @enterprise %>
+    <%= render partial: 'billing/enterprise' %>
+  <% else %>
+    <% if @new %>
+      <%= render partial: 'billing/new_subscriber' %>
+    <% else %>
+      <%= render partial: 'billing/subscribed_view' %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= render partial: 'billing/cancel_modal' %>
+<%= render partial: 'billing/activate_modal' %>
+<%= render partial: 'billing/no_plan_modal' %>
+<script src="https://js.stripe.com/v3/"></script>

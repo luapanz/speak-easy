@@ -1,0 +1,109 @@
+<%= content_for :js_libs, "modernizr jasny" %>
+<%= simple_form_for @user,
+                    :url => account_path, :method => :put,
+                    :html => {:class => 'form-horizontal user-form'},
+                    wrapper: :horizontal_form,
+                    wrapper_mappings: {
+                        file: :horizontal_file_input,
+                    } do |f| %>
+  <div class="profile-header jumbotron  d-flex align-items-center justify-content-center flex-column pb-0" style="background: transparent;">
+    <div class="fileinput fileinput-avatar fileinput-new d-flex flex-column align-items-center" data-provides="fileinput" style="height: 180px; width: 200px">
+      <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+        <% if @user.photo_url.present? %>
+            <img class="rounded-circle profile-image hoverZoomLink" width="128" height="128"
+        data-turbolinks-permanent="true" src="<%= @user.photo_url %>"
+        alt="<%= "#{@user.firstname} #{@user.lastname} photo" %>">
+        <% else %>
+            <img class="rounded-circle profile-image hoverZoomLink" width="128" height="128"
+        data-turbolinks-permanent="true" src="<%= image_path('no_photo3x.png') %>"
+        alt="No photo">
+        <% end %>
+      </div>
+      <div class="fileinput-preview fileinput-exists avatar rounded-circle"></div>
+    </div>
+    <a href="#" class="account-photo" data-target="#accountImageModal" data-toggle="modal" data-backdrop="static">
+      Change Photo
+    </a>
+    <h2 class="m-0 mb-2"><%= current_user.firstname %> <%= current_user.lastname %></h2>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 mr-auto ml-auto">
+        <div class="card">
+          <div class="card-body account_card">
+                <hr>
+                <%= f.input :firstname, :label => "First Name", :required => true %>
+                <%= f.input :lastname,  :label => "Last Name",  :required => true %>
+                <%= f.input :phone, :required => true %>
+                <%= f.input :email, :required => true %>
+                <%#= f.input :photo, as: :file %>
+                <hr>
+                <div class="row">
+                  <div class="col">
+                    <div class="edit-cancel-link float-left" style="margin-right: 75px; margin-top: 10px;">
+                      <a href="#" class='change-password-link' data-target="#passwordModal" data-toggle="modal">Change Password</a>
+                    </div>
+                    <div class='float-right'>
+                      <%= f.button :submit, 'Save Changes', :class => 'btn btn-primary edit-submit-button' %>
+                    </div>
+                    <div class="edit-cancel-link float-right" style="margin-right: 75px; margin-top: 10px;">
+                      <%= link_to 'Cancel', :back %>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="accountImageModal" aria-labelledby="Are you ready">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload a photo</h5>
+        </div>
+        <div class="modal-body">
+          <input type="file" id="accountFileInput" accept="image/*" />
+          <div class="canvas-div">
+            <canvas id="accountCanvas">
+              Your browser does not support HTML5
+            </canvas>
+          </div>
+          <div id="result"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="accountCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="accountConfirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="passwordModal" aria-labelledby="Change Password">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Change your password</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input class="form-control" style="width: 100%;" name="oldPass" id="oldPass" type="password" placeholder="Old Password">
+          </div>
+          <div class="form-group">
+            <input class="form-control" style="width: 100%;" name="newPass" id="newPass" type="password" placeholder="New Password">
+          </div>
+          <div class="form-group">
+            <input class="form-control" style="width: 100%;" name="confirmPass" id="confirmPass" type="password" placeholder="Confirm New Password">
+          </div>
+          <input type="hidden" name="email" id="email" value="<%= @user.email %>" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="passwordCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="passwordConfirm">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

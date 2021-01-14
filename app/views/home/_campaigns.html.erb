@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card card-default position-relative inspectable">
+      <!-- component-title: Active Users Table -->
+      <div class="card-header">
+        <h6>Campaigns</h6>
+      </div>
+      <% if @campaigns.present? %>
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+        			  <th>Location</th>
+        			  <th>Valid On</th>
+        			  <th>Coupons</th>
+        			  <th>Sent</th>
+        			  <th>Viewed</th>
+        			  <th>Redeemed</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @campaigns.each_with_index do |campaign, index| %>
+        				<tr>
+        				  <td><%= campaign.offer_title %></td>
+        				  <td>
+        					<%= locations_ids(@locations, campaign.location_ids) %>
+        				  </td>
+        				  <td><%= campaign.run_date.strftime("%-m/%-d/%y") %></td>
+        				  <td><%= @coupon_summ[campaign.objectId][:num_coupons] %></td>
+        				  <td><%= @coupon_summ[campaign.objectId][:sent_coupons] %></td>
+        				  <!--<td><%= @coupon_summ[campaign.objectId][:unsent] %></td>-->
+        				  <td><%= @coupon_summ[campaign.objectId][:viewed_coupons] %></td>
+        				  <td><%= @coupon_summ[campaign.objectId][:success] %></td>
+        			</tr>
+        			<% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+          <div class="alert alert-warning">No campaigns found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

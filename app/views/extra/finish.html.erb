@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Ready to Create Your Team</h1>
+    <p>You’re all set to add your team, but first you need the SpeakEasy app.</p>
+    <p>To start inviting your team from your phone’s contacts, download the app and sign in with your username and password.</p>
+    <br>
+    <% cache do %>
+        <%
+          c = ParseResource::ParseConfig.config
+          itunes_url   = c['params']['apple_app_store_url']
+          google_url   = c['params']['google_play_url']
+        %>
+        <a href="<%= itunes_url %>">
+          <img src="<%=image_path('appstore.svg')%>" alt="">
+        </a>
+        <a href="<%= google_url %>">
+          <img src="<%=image_path('googleplay.png')%>" alt="" style="width: 150px">
+        </a>
+    <% end %>
+  </div>
+</div>

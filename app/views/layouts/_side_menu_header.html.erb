@@ -1,0 +1,35 @@
+<div class="navbar-header">
+  <div class="profile">
+    <% if @user.photo_url.present? %>
+        <img class="rounded-circle profile-image hoverZoomLink" width="52" height="52"
+    data-turbolinks-permanent="true" src="<%= @user.photo_url %>"
+    alt="<%= "#{@user.firstname} #{@user.lastname} photo" %>">
+    <% else %>
+        <img class="rounded-circle profile-image hoverZoomLink" width="52" height="52"
+    data-turbolinks-permanent="true" src="<%= image_path('no_photo3x.png') %>"
+    alt="No photo">
+    <% end %>
+    <div class="profile-body">
+      <h6><%= current_user.firstname %> <%= current_user.lastname %></h6>
+      <div class="user-links">
+        <a class="btn btn-link" href="/account" data-placement="bottom" data-toggle="tooltip" data-original-title="Profile">
+          <%= theme_icon_tag "user" %>
+        </a>
+        <!--
+        <a class="btn btn-link" href="#" data-placement="bottom" data-toggle="tooltip" data-original-title="Messages">
+          <%= theme_icon_tag "email" %>
+        </a>
+        <a class="btn btn-link" href="#" data-placement="bottom" data-toggle="tooltip" data-original-title="Settings">
+          <%= theme_icon_tag "settings" %>
+        </a>
+      -->
+        <a class="btn btn-link" href="/logout" data-placement="bottom" data-toggle="tooltip" data-original-title="Logout">
+          <%= theme_icon_tag "power-off" %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#menu-content" aria-controls="menu-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</div>

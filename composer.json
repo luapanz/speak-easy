@@ -1,0 +1,12 @@
+{
+  "require-dev": {
+    "phing/phing" : "2.*"
+  },
+  "config": {
+    "bin-dir": "bin",
+    "github-oauth": {
+      "github.com": "58e77299e857a0db09ef6d771f7539df8cd5a449"
+    }
+  },
+  "minimum-stability": "stable"
+}

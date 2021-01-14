@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-12 col-md-11 mr-auto ml-auto">
+    <div class="card" style="padding: 15px;">
+      <h5>Billing Details</h5>
+      <hr />
+      <% if @plan.present? %>
+        <% if @extra_members == 0 %>
+          <div class="row">
+            <div class="col-2">
+                <h6 style="margin-top: 11px;"><%= @plan.name %></h6>
+            </div>
+            <div class="col-1" style="padding-top: 8px;">
+                $<%= @plan.cost %>/mo
+                <input type='hidden' value="49" class='current-cost' />
+            </div>
+            <div class="col-3" style="padding-top: 8px;">
+              Last Payment: <%= @last_payment %>
+            </div>
+            <div class="col-2" style="padding-top: 8px;">
+              User License: <%= @plan.users %>
+            </div>
+            <div class="col-2" style="padding-top: 8px;">
+              Status: <%= @user.subscription_status %>
+            </div>
+            <div class="col-2 float-right">
+              <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#AddUserModal">Update User License</button>
+            </div>
+          </div>
+          <input type="hidden" class="userinfo" value="<%= @user.business_id %>" />
+          <div class="row" style="margin-top: 50px;">
+            <div class="col-6">
+              <button class="btn btn-outline-primary float-left" data-toggle="modal" data-target="#UpdateCardModal">Update Card</button>
+            </div>
+            <div class="col-6">
+              <% if @user.subscription_status == "active" || @user.subscription_status == "" %>
+                <button class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#CancelModal">Cancel Subscription</button>
+              <% else %>
+                <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#ActivateModal">Activate Subscription</button>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="col-2">
+                <h6 style="margin-top: 11px;"><%= @plan.name %></h6>
+            </div>
+            <div class="col-1" style="padding-top: 8px;">
+                $<%= 49 + (7*@extra_members) %>/mo
+                <input type='hidden' value="<%= 49 + (7*@extra_members) %>" class='current-cost' />
+            </div>
+            <div class="col-3" style="padding-top: 8px;">
+              Last Payment: <%= @last_payment %>
+            </div>
+            <div class="col-2" style="padding-top: 8px;">
+              User License: <%= 7 + @extra_members %>
+            </div>
+            <div class="col-2" style="padding-top: 8px;">
+              Status: <%= @user.subscription_status %>
+            </div>
+            <div class="col-2 float-right">
+              <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#AddUserModal">Update User License</button>
+            </div>
+          </div>
+          <input type="hidden" class="userinfo" value="<%= @user.business_id %>" />
+          <div class="row" style="margin-top: 50px;">
+            <div class="col-6">
+              <button class="btn btn-outline-primary float-left" data-toggle="modal" data-target="#UpdateCardModal">Update Card</button>
+            </div>
+            <div class="col-6">
+              <% if @user.subscription_status == "active" || @user.subscription_status == "" %>
+                <button class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#CancelModal">Cancel Subscription</button>
+              <% else %>
+                <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#ActivateModal">Activate Subscription</button>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="row">
+          <div class="col">
+            <h5>Not Subscribed</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-primary float-right" data-toggle="modal" data-target="#PlansModal">Subscribe</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= render partial: 'billing/update_card_modal' %>
+<%= render partial: 'billing/add_users_modal' %>

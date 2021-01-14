@@ -1,0 +1,91 @@
+<div class="container-fluid signup_main">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-center mt-5 flex-column" style="margin-top: 25px; margin-bottom: 45px;">
+        <img src="<%= asset_path('pulls-logo-black@2x.png') %>" width="150">
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 mr-md-auto ml-md-auto ">
+        <div class="card">
+          <div class="card-header">
+            <h4>Congratulations! Now Download the App</h4>
+          </div>
+          <div class="card-body">
+            <p class="card-text">
+              Your next step to start using SpeakEasy is to download the app. You can do so from the links below.
+            </p>
+            <div class="row">
+              <div class="col-6 mr-auto ml-auto"  style="text-align: center;">
+                <a href="https://itunes.apple.com/us/app/speakeasy-personal-promos/id1455972687?mt=8&ign-mpt=uo%3D2">
+                  <img class="tutorial_app" src="<%= image_path('appstore.svg') %>" />
+                </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7 mr-auto ml-auto" style="text-align: center;">
+                <a href="https://play.google.com/store/apps/details?id=speakeasy.com.speakeasy">
+                  <img class="tutorial_app" src="<%= image_path('googleplay.png') %>" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="tutorialFanModal" tabindex="-1" role="dialog" aria-labelledby="Invite Fan Modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-4">
+            <img style="width: 100%;" src="<%= image_path('welcome_screens/welcome_2_1.png') %>" />
+          </div>
+          <div class="col-8">
+            <h3 style="margin-top: 10px; margin-bottom: 30px;">
+              Welcome To SpeakEasy!
+            </h3>
+            <div>
+              SpeakEasy is a tool that allows you to communicate with your team & fans, and distribute information to your personal contacts!
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <h3 style="margin-top: 10px; margin-bottom: 30px;">
+              Chat With Your Team & Fans
+            </h3>
+            <div>
+              One features of SpeakEasy is the ability to communicate with members of your team and your organization’s fans, both on a 1 to 1 basis as well as in a group setting.
+            </div>
+          </div>
+          <div class="col-4">
+            <img style="width: 100%;" src="<%= image_path('welcome_screens/welcome_2_2.png') %>" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <img style="width: 100%;" src="<%= image_path('welcome_screens/welcome_2_3.png') %>" />
+          </div>
+          <div class="col-8">
+            <h3 style="margin-top: 10px; margin-bottom: 30px;">
+              Distribute Timely, Relevant Information
+            </h3>
+            <div>
+              SpeakEasy also allows you to quickly distribute information such as sales deals, calendar invites, discounts, or nearly anything that you deem relevant to your personal contacts.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="tutorialAppAccept">Get Started</button>
+      </div>
+    </div>
+  </div>
+</div>

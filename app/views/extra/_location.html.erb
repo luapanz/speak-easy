@@ -1,0 +1,103 @@
+<fieldset>
+	<legend><span> Location <span class="locationNumber"><%=i.to_i+1%></span></span></legend>
+<%= f.simple_fields_for field_name, l do |sfl| %>
+    <%= sfl.input :name, :label => "Location Name", :input_html => {:id => "user_locations__name_#{i}"}, :required => true %>
+    <div class="form-group location-type">
+      <div class="col-sm-6 col-md-offset-3">
+        <h4>Location Type</h4>
+        <div class="onoffswitch">
+          <input type="checkbox" name="user[<%= field_name.gsub(/[\[\]]/, '') %>][][is_virtual]" class="onoffswitch-checkbox" id="user_locations__is_virtual_<%= i %>">
+          <label class="onoffswitch-label" for="user_locations__is_virtual_<%= i %>">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+        <p>Physical locations are like restaurants or brick & mortar stores. Virtual locations are like
+          mobile detailing, food trucks, or bands.</p>
+      </div>
+    </div>
+    <%= sfl.input :street,
+                  :wrapper_html => {
+                      :class => 'location_physical'
+                  },
+                  :input_html => {
+                      :id => "user_locations__street_#{i}"
+                  },
+                  :required => true
+    %>
+    <%= sfl.input :suite,
+                  :wrapper_html => {
+                      :class => 'location_physical'
+                  },
+                  :input_html => {
+                      :id => "user_locations__suite_#{i}"
+                  }
+    %>
+    <%= sfl.input :city,
+                  :wrapper_html => {
+                      :class => 'location_physical'
+                  },
+                  :input_html => {
+                      :id => "user_locations__city_#{i}"
+                  },
+                  :required => true
+    %>
+    <%= sfl.input :state,
+                  :wrapper_html => {
+                      :class => 'location_physical'
+                  },
+                  :input_html => {
+                      :id => "user_locations__state_#{i}"
+                  },
+                  :required => true
+    %>
+    <%= sfl.input :zip,
+                  :wrapper_html => {
+                      :class => 'location_physical'
+                  },
+                  :input_html => {
+                      :id => "user_locations__zip_#{i}"
+                  },
+                  :required => true
+    %>
+    <%= sfl.input :country, as: :country,
+                  priority: ['US'],
+                  include_blank: 'Select a country',
+                  :input_html => {
+                      :id => "user_locations__country_#{i}",
+                      :required => true
+                  },
+                  :required => true
+    %>
+    <%= sfl.input :phone,
+                  :input_html => {
+                      :id => "user_locations__phone_#{i}"
+                  }
+    %>
+    <%= sfl.input :url, :label => "Website URL",
+                  :input_html => {
+                      :id => "user_locations__url_#{i}"
+                  },
+                  as: :string
+    %>
+    <%= sfl.input :logo, as: :file,
+                  :input_html => {
+                      :id => "user_locations__logo_#{i}",
+                      :class => 'location__logo'
+                  },
+                  :required => false
+    %>
+    <div class="form-group">
+      <div class="col-sm-6 col-sm-offset-3" id="user_photo_preview_<%=i%>"></div>
+    </div>
+</fieldset>
+    <div class="row">
+      <div class="col-md-3 col-xs-6  col-md-offset-3">
+        <a href="#" class="btn btn-default btn-block location-add-another">Save and add next location</a>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <a href="#" class="btn btn-block btn-danger location-remove">Remove This Location</a>
+      </div>
+    </div>
+<% end %>
+<hr>

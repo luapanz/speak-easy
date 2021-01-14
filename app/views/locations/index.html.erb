@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <h5 class="location-header">Locations</h5>
+    </div>
+    <div class="col-9">
+      <% if @user.role == Role::OWNER || @user.role == Role::MARKETING || @user.role == Role::FINANCE%>
+        <a href="<%= new_location_path %>" class="btn btn-primary new-location-button float-right">
+          + New Location
+        </a>
+      <% end %>
+    </div>
+  </div>
+  <hr class="location_line"/>
+
+  <%= render partial: 'locations/table' %>
+
+</div>
+<script src = "https://deploy.userpilot.io/24xk34u10.js"></script>
+<script>
+  userpilot.identify(
+
+    "<%= @user.objectId %>", // Used to identify users
+    {
+     name: "<%= @user.firstname %> <%= @user.lastname %>", // Full name
+     email: "<%= @user.email %>",
+     created_at: "<%= @user.createdAt %>"// Email address
+    }
+  );
+</script>

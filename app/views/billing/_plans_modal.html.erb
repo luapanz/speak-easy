@@ -1,0 +1,76 @@
+<div class="modal fade" id="PlansModal" tabindex="-1" role="dialog" aria-labelledby="Payment Modal" show style="background: rgba(0, 0, 0, .7);">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Choose a New Plan</h5>
+      </div>
+      <div class="modal-body">
+        <div class="plan-selector">
+          <form action="" style="margin-bottom: 0px;">
+            <% if @plan != @small_plan %>
+              <div class="form-check">
+                <label class="custom-control custom-radio">
+                  <input name="plan-level" type="radio" class="custom-control-input" value="<%=@small_plan.objectId %>">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description d-flex w-100">
+                    <div class="details">
+                      <div class="plan-name"><%= @small_plan.name %></div>
+                      <div class="plan-description"><%= @small_plan.users %> User License, <%= @small_plan.virtual %> Location</div>
+                    </div>
+                    <div class="price">
+                      $<%= @small_plan.cost %>/mo
+                    </div>
+                  </span>
+                </label>
+              </div>
+            <% end %>
+            <% if @plan != @medium_plan %>
+              <div class="form-check">
+                <label class="custom-control custom-radio">
+                  <input name="plan-level" type="radio" class="custom-control-input" value="<%=@medium_plan.objectId %>">
+                  <div class="highlight"></div>
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description d-flex w-100">
+                    <div class="details">
+                      <div class="plan-name"><%= @medium_plan.name %></div>
+                      <div class="plan-description"><%= @medium_plan.users %> User License, <%= @medium_plan.physical %> Physical Locations, <%= @medium_plan.virtual %> Virtual Locations</div>
+                    </div>
+                    <div class="price">
+                      $<%= @medium_plan.cost %>/mo
+                    </div>
+                  </span>
+                </label>
+              </div>
+            <% end %>
+            <% if @plan != @large_plan %>
+              <div class="form-check">
+                <label class="custom-control custom-radio">
+                  <input name="plan-level" type="radio" class="custom-control-input" value="<%=@large_plan.objectId %>">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description d-flex w-100">
+                    <div class="details">
+                      <div class="plan-name"><%= @large_plan.name %></div>
+                      <div class="plan-description"><%= @large_plan.users %> User License, <%= @large_plan.physical %> Physical Locations, <%= @large_plan.virtual %> Virtual Locations</div>
+                    </div>
+                    <div class="price">
+                      $<%= @large_plan.cost %>/mo
+                    </div>
+                  </span>
+                </label>
+              </div>
+            <% end %>
+            <input type="hidden" class="userinfo" value="<%= @user.business_id %>" />
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer sub-modal-footer">
+        <button type="button" class="btn btn-outline-primary float-left" data-dismiss="modal">Cancel</button>
+        <% if @plan.present? %>
+          <button class='btn btn-primary upgrade-plan-button'>Upgrade</button>
+        <% else %>
+          <button class='btn btn-primary upgrade-plan-button'>Subscribe</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

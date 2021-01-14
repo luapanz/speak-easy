@@ -1,0 +1,47 @@
+<project name="PULLS" default="configure" basedir="./">
+  <property name="source" value="protected"/>
+  <property environment="env" />
+
+  <!-- Load our configuration -->
+  <property file="./build.properties" />
+
+  <target name="configure">
+    <copy file="config/parse_resource.yml.tpl" tofile="config/parse_resource.yml" overwrite="true">
+      <filterchain>
+        <replacetokens begintoken="##" endtoken="##">
+          <token key="PARSE_APP_ID" value="${env.parse_app_id}" />
+          <token key="PARSE_MASTER_KEY" value="${env.parse_master_key}" />
+          <token key="PARSE_SERVER_URL" value="${env.parse_server_url}" />
+        </replacetokens>
+      </filterchain>
+    </copy>
+
+    <copy file="config/cloudinary.yml.tpl" tofile="config/cloudinary.yml" overwrite="true">
+      <filterchain>
+        <replacetokens begintoken="##" endtoken="##">
+          <token key="CLOUDINARY_CLOUD_NAME" value="${env.cloudinary_cloud_name}" />
+          <token key="CLOUDINARY_API_KEY" value="${env.cloudinary_api_key}" />
+          <token key="CLOUDINARY_API_SECRET" value="${env.cloudinary_api_secret}" />
+          <token key="CLOUDINARY_ENHANCE_IMAGE_TAG" value="${env.cloudinary_enhance_image_tag}" />
+          <token key="CLOUDINARY_STATIC_IMAGE_SUPPORT" value="${env.cloudinary_static_image_support}" />
+          <token key="CLOUDINARY_FOLDER" value="${env.cloudinary_folder}" />
+        </replacetokens>
+      </filterchain>
+    </copy>
+
+    <copy file="config/secrets.yml.tpl" tofile="config/secrets.yml" overwrite="true">
+      <filterchain>
+        <replacetokens begintoken="##" endtoken="##">
+          <token key="SECRET_KEY_BASE" value="${env.secret_key_base}" />
+        </replacetokens>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="run_android">
+    <exec command="cordova prepare android" />
+    <exec command="cordova run android --device" />
+  </target>
+
+
+</project>

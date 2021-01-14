@@ -1,0 +1,103 @@
+// Place all the styles related to the signup controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.location-header{
+  padding-top: 5px;
+}
+
+.new-location-button{
+  border-radius: 12px !important;
+}
+
+.location_line{
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.location-card{
+  padding: 0 !important;
+
+  .location-card-image{
+    width: 100%;
+  }
+
+  .location-text{
+    padding: 0;
+    margin: 0;
+  }
+
+  .location-info-row{
+    margin-top: 30px;
+    margin-bottom: 0;
+  }
+
+  .location-label{
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  .location-info{
+    margin-top: 0;
+  }
+
+  .location-active {
+    color: #4CAF50;
+  }
+
+  .location-inactive {
+    color: #F44336;
+  }
+
+  .location-button {
+    font-size: 20px;
+  }
+
+  .location-button:hover {
+    color: #84ffff;
+    text-decoration: none;
+  }
+}
+
+.location-edit-card{
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .location-edit-type{
+    font-size: 16px;
+  }
+
+  .location-edit-image{
+    margin-top: 10px;
+  }
+
+  .edit-submit-button{
+    width: 150px;
+  }
+
+  .edit-cancel-link{
+    margin-top: 7px;
+  }
+
+}
+
+#location_photo_preview img{
+  min-width: 350px;
+  max-width: 350px;
+}
+
+#editCanvas{
+  margin-top: 15px;
+  border: 1px solid #212121;
+  height: 500px;
+  width: 100%;
+  cursor: default;
+
+  img {
+    max-width: 100%;
+  }
+}

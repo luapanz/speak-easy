@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="card location-edit-card">
+    <div class="card-body">
+      <% if @location.name.present? %>
+        <h5 class="card-title">Make changes to <%= @location.name %></h5>
+      <% end %>
+      <%= simple_form_for @location,
+                          :html => {:class => 'form-horizontal locations-form'},
+                          wrapper: :horizontal_form,
+                          wrapper_mappings: {
+                              file: :horizontal_file_input,
+                              boolean: :horizontal_boolean
+                          } do |f| %>
+
+          <div class="row location-type" style="margin-bottom: 10px;">
+            <div class="col-3">
+              <span class="location-edit-type">Location Type</span>
+            </div>
+            <div class="col-7">
+              <span>
+                Physical locations are like restaurants, brick & mortar stores. Virtual locations are like
+                mobile
+                detailing and bands.
+              </span>
+            </div>
+            <div class="col-2">
+              <div class="onoffswitch">
+                <input type="hidden" name="location[is_virtual]" value="0">
+                <input type="checkbox" name="location[is_virtual]"
+                       class="onoffswitch-checkbox" id="user_locations__is_virtual"
+                       value="1" <%= @location.is_virtual ? "checked" : "" %> />
+                <label class="onoffswitch-label" for="user_locations__is_virtual">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <%= f.input :name, :required => true %>
+
+          <div id="location-edit-physical" class="location-edit-physical">
+            <%= f.input :street, :wrapper_html => {:class => 'location_physical location-hide-physical'}, :required => true %>
+            <%= f.input :suite, :wrapper_html => {:class => 'location_physical'}, :required => false %>
+            <%= f.input :city, :wrapper_html => {:class => 'location_physical'}, :required => true %>
+            <%= f.input :state, :wrapper_html => {:class => 'location_physical'}, :required => true %>
+            <%= f.input :zip, :wrapper_html => {:class => 'location_physical'}, :required => false %>
+          </div>
+
+          <%= f.input :country, as: :country, priority: ['US'], include_blank: 'Select a country',
+                      :input_html => {:required => true}, :required => true %>
+
+          <%= f.input :phone, label: "Phone", :placeholder => "Phone Number" %>
+          <%= f.input :url, :label => 'Website URL', as: :string, :required => false %>
+          <%= f.input :is_active, :as => :boolean, :input_html => { :checked => true } %>
+          <% if @location.is_virtual %>
+            <script>
+              $(document).ready(function(){
+                $(".location-edit-physical").toggle();
+              })
+            </script>
+          <% end %>
+          <div class="row">
+            <div class="col-3">
+              <div class="location-edit-type" style="margin-top: 7px;">
+                Logo
+              </div>
+            </div>
+            <div class="col-9">
+              <button type="button" class="btn btn-outline-primary edit_photo" data-target="#editImageModal" data-toggle="modal" data-backdrop="static">
+                Upload a Logo
+              </button>
+            </div>
+          </div>
+          <div class="row location-edit-image">
+              <% if @location.logo_url.present? %>
+                <div class="col-6" id="location_photo_preview">
+                  <img src="<%= @location.logo_url %>" alt="<%= "#{@location.name} photo" %>">
+                </div>
+                <div class="col-6" id="location_photo_preview">
+                  <div id="editPic" style="min-width: 100%"></div>
+                </div>
+              <% else %>
+                <div class="col-6" id="location_photo_preview" >
+                  <div id="editPic"></div>
+                </div>
+              <% end %>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class='float-right'>
+                <%= f.button :submit, 'Save', :class => 'btn btn-primary edit-submit-button' %>
+              </div>
+              <div class="edit-cancel-link float-right" style="margin-right: 75px;">
+                <%= link_to 'Cancel', :back %>
+              </div>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editImageModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a photo</h5>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="editFileInput" accept="image/*" />
+        <p>
+          To zoom in and zoom out, use the page scrolling function over the photo.
+        </p>
+        <div class="canvas-div">
+          <canvas id="editCanvas">
+            Your browser does not support HTML5
+          </canvas>
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="editCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="editConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

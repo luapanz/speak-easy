@@ -1,0 +1,452 @@
+<% content_for :js_libs, "modernizr chartjs" %>
+<% if @campaign.present? %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <h5 class="location-header"><%= @campaign.offer_title %></h5>
+    </div>
+    <div class="col-9">
+      <% if @user.role == Role::OWNER || @user.role == Role::MARKETING %>
+        <% if DateTime.now < @campaign.run_date %>
+          <button type="button" class="btn cancel-button float-right" data-toggle="modal" data-target="#cancelCampaign">
+            End Campaign
+          </button>
+        <% else %>
+          <button type="button" class="btn btn-primary new-location-button float-right" data-toggle="modal" data-target="#repeatCampaign">
+            Repeat Campaign
+          </a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <hr class="location_line"/>
+  <div class="row">
+    <div class="col-3">
+      <% if @campaign.photo_url.present? %>
+        <img
+          src="<%= @campaign.photo_url %>"
+          alt="Campaign Image"
+        />
+      <% else %>
+        <img
+          src="<%= asset_path('generic_campaign.png') %>"
+          alt="Campaign Image"
+        />
+      <% end %>
+    </div>
+    <div class="col-9" style="padding-top: 15px;">
+      <div class="row">
+        <div class="col-12">
+          <p class="campaign_label">Details</p>
+          <p class="campaign_text" id="campaign_text"></p>
+        </div>
+      </div>
+      <% if @campaign.details %>
+        <% if @campaign.details[0,3] == '[{"' %>
+          <div id="full-editor"></div>
+          <script>
+            (function() {
+              // Initialize editor with custom theme and modules
+              var quill = new Quill('#full-editor', {
+                modules: {
+                  toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  ]
+                },
+                placeholder: 'Description here!',
+                theme: 'snow' // or 'bubble'
+              });
+
+              var detailsText = '(' + '<%= @campaign.details %>' + ')';
+              detailsText = detailsText.replace(/&quot;/g, '"');
+              detailsText = detailsText.replace(/(\r\n|\n|\r)/gm,'\\n');
+              detailsText = detailsText.replace(/{"b":true}/g, '{"bold":true}');
+              detailsText = detailsText.replace(/{"i":true}/g, '{"italic":true}');
+              detailsText = detailsText.replace(/{"block":"ul"}/g, '{"bullet":true}');
+              detailsText = detailsText.replace(/{"block":"ol"}/g, '{"list":true}');
+              detailsText = detailsText.replace(/{"b":true}/g, '{"bold":true}');
+              detailsText = detailsText.replace(/"a"/g, '"link"');
+              var jsonArray = eval(detailsText);
+              quill.setContents(jsonArray);
+              document.getElementById("campaign_text").innerHTML = quill.root.innerHTML;
+              $(".ql-toolbar").hide();
+              $("#full-editor").hide();
+            })()
+          </script>
+        <% else %>
+          <script>
+            (function() {
+              document.getElementById("campaign_text").innerHTML = '<%= @campaign.details %>';
+            })()
+          </script>
+        <% end %>
+      <% end %>
+      <div class="row">
+        <% if @campaign.start_date.present? %>
+          <div class="col-4">
+            <p class="campaign_label">Campaign Dates</p>
+            <p class="campaign_text">
+              <%= theme_icon_tag("calendar") %> <%= @campaign.start_date.strftime("%-m/%-d/%y") %> - <%= @campaign.run_date.strftime("%-m/%-d/%y") %>
+            </p>
+          </div>
+        <% end %>
+        <div class="col-4">
+          <p class="campaign_label">Coupon Code</p>
+          <p class="campaign_text">
+            <%= @campaign.coupon_code %>
+          </p>
+        </div>
+        <div class="col-4">
+          <p class="campaign_label">Age Restriction</p>
+          <p class="campaign_text">
+            <%= fa_icon_tag("exclamation-triangle") %> <%= @campaign.age %>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <p class="campaign_label">Conditions</p>
+          <p class="campaign_text" id="conditions_text"></p>
+        </div>
+        <div class="col-8">
+          <p class="campaign_label">Locations</p>
+          <p class="campaign_text">
+            <% if @campaign.location_ids.present? %>
+              <%= locations_ids(@locations, @campaign.location_ids) %>
+            <% else %>
+              <span> </span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+      <% if @campaign.offer_condition.present? %>
+        <% if @campaign.offer_condition[0,3] == '[{"'%>
+          <div id="full-editor-conditions"></div>
+          <script>
+            (function() {
+              // Initialize editor with custom theme and modules
+              var quillCon = new Quill('#full-editor-conditions', {
+                modules: {
+                  toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  ]
+                },
+                placeholder: 'Description here!',
+                theme: 'snow' // or 'bubble'
+              });
+
+              var detailsText = '(' + '<%= @campaign.offer_condition %>' + ')';
+              detailsText = detailsText.replace(/&quot;/g, '"');
+              detailsText = detailsText.replace(/(\r\n|\n|\r)/gm,'\\n');
+              detailsText = detailsText.replace(/{"b":true}/g, '{"bold":true}');
+              detailsText = detailsText.replace(/{"i":true}/g, '{"italic":true}');
+              detailsText = detailsText.replace(/{"block":"ul"}/g, '{"bullet":true}');
+              detailsText = detailsText.replace(/{"block":"ol"}/g, '{"list":true}');
+              detailsText = detailsText.replace(/{"b":true}/g, '{"bold":true}');
+              detailsText = detailsText.replace(/"a"/g, '"link"');
+              var jsonArray = eval(detailsText);
+              quillCon.setContents(jsonArray);
+              document.getElementById("conditions_text").innerHTML = quillCon.root.innerHTML;
+              $(".ql-toolbar").hide();
+              $("#full-editor-conditions").hide();
+            })()
+          </script>
+        <% else %>
+          <script>
+            (function() {
+              document.getElementById("campaign_text").innerHTML = '<%= @campaign.offer_condition %>';
+            })()
+          </script>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row" style="text-align: center; margin-top: 50px;">
+    <div class="col-4">
+      <p class="campaign_label">Engagements</p>
+      <p class="campaign_stat"><%= @reach %></p>
+    </div>
+    <div class="col-4">
+      <p class="campaign_label">Impressions</p>
+      <p class="campaign_stat"><%= @total_engagements %></p>
+    </div>
+    <div class="col-4">
+      <p class="campaign_label">Conversions</p>
+      <p class="campaign_stat"><%= @conversions %></p>
+    </div>
+  </div>
+  <div class="row" style="text-align: center; margin-top: 50px; margin-bottom: 75px;">
+    <div class="col-6">
+      <h4>Device Types</h4>
+      <div style="width: 200px; max-height: 200px; margin-left: auto; margin-right: auto;">
+        <%= doughnut_chart @data, @options %>
+      </div>
+    </div>
+    <div class="col-6">
+      <h4>Zip Codes</h4>
+      <div style="width: 200px; max-height: 200px; margin-left: auto; margin-right: auto;">
+        <%= doughnut_chart @zipdata, @options %>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="margin-top: 30px; margin-bottom: 50px;">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Team Member</th>
+              <th><center>Engagements</center></th>
+              <th><center>Impressions</center></th>
+              <th><center>Conversions</center></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- <% @coupons.each_with_index do |coupon, index| %>
+              <% if @agent_names[coupon.agent_id].present? %>
+                <tr>
+                  <td><%= @agent_names[coupon.agent_id][:firstname] %> <%= @agent_names[coupon.agent_id][:lastname] %></td>
+                  <td><%= coupon.sent_coupons %></td>
+                  <td><%= coupon.viewed_coupons %></td>
+                  <td><%= coupon.success %></td>
+                </tr>
+              <% end %>
+            <% end %> -->
+            <% @agent_names.each do |key, agent| %>
+            <tr>
+              <td><%= agent[:firstname] %> <%= agent[:lastname] %></td>
+              <td><center><%= agent[:reach] %></center></td>
+              <td><center><%= agent[:engagements] %></center></td>
+              <td><center><%= agent[:conversions] %></center></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+
+  </div>
+</div>
+<% else %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <h5 class="location-header">Oops. No Campaign Found</h5>
+    </div>
+  </div>
+  <hr class="location_line"/>
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            It looks like something went wrong
+          </h5>
+          <div class="card-text">
+            Please go back and try again or select another campaign.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="cancelCampaign" tabindex="-1" role="dialog" aria-labelledby="Cancel Campaign">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">End this Campaign</h4>
+      </div>
+      <div class="modal-body">
+        <%= content_tag :div, '', id: 'object_id', data: { source: params[:id] } %>
+        <p class="card-text">
+          Are you sure you want to end this campaign early? This will end terminate all
+          valid coupons and eliminate the ability for Team Members to distribute.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+        <button type="button" class="btn cancel-button" data-dismiss="modal" id="confirmCancel">End Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="repeatCampaign" tabindex="-1" role="dialog" aria-labelledby="Repeat Campaign">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Run this Campaign Again</h4>
+      </div>
+      <div class="modal-body">
+        <p class="card-text">
+          Use this to quickly run the same campaign again. Just select a new time
+          frame and update the locations.
+        </p>
+        <%= simple_form_for @campaign,
+                            :html => {:class => 'form-horizontal campaigns-form', novalidate: 'novalidate'},
+                            wrapper: :horizontal_form,
+                            wrapper_mappings: {
+                                file: :horizontal_file_input,
+                                boolean: :horizontal_boolean,
+                                check_boxes: :horizontal_radio_and_checkboxes,
+                                radio_buttons: :horizontal_radio_and_checkboxes
+                            } do |f| %>
+          <%= f.input :run_interval,
+                      :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="The date range for which this campaign will be active, redeemable, and viewable.">Campaign &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>Date Range</span>'.html_safe,
+                      placeholder: 'Click here to select date and time of Campaign',
+                      :required => true,
+                      :as => :string,
+                      :input_html => {:class => 'daterange'},
+                      :wrapper_html => {:class => 'input_zebra'}
+          %>
+          <div class="accordian" id="accordian">
+            <% @all_locations.each_with_index do |location, index| %>
+              <% if @team_agents.any?{|agent| agent.location_id == location.id} %>
+                <div class="card card-flat">
+                  <div class="card-header p-0" role="tab">
+                    <h6 class="location-names">
+                      <% if index == 0%>
+                      <a data-toggle="collapse" data-target="#<%= location.id %>" class="campaign-signup-location" aria-expanded="true" aria-controls="<%= location.id %>">
+                        <%= location.name %><i class="arrow material-icons">expand_more</i>
+                      </a>
+                      <% else %>
+                      <a data-toggle="collapse" data-target="#<%= location.id %>" class="collapsed campaign-signup-location" aria-expanded="false" aria-controls="<%= location.id %>">
+                        <%= location.name %><i class="arrow material-icons">expand_more</i>
+                      </a>
+                      <% end %>
+                    </h6>
+                  </div>
+                  <% if index == 0%>
+                  <div id="<%= location.id %>" class="collapse show" data-parent="#accordian">
+                  <% else %>
+                  <div id="<%= location.id %>" class="collapse" data-parent="#accordian">
+                  <% end %>
+                    <table class="table inspectable">
+                      <thead>
+                        <tr>
+                          <th width="1">
+                            <input type="checkbox" class="selectallcheck" value="<%= location.id %>" onclick="selectAll(this.checked, '<%= location.id %>', '<%= location.name %>');"/>
+                          </th>
+                          <th>Name</th>
+                          <th>Role</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% @team_agents.each do |agent| %>
+                          <% if agent.location_id == location.id %>
+                          <tr>
+                            <td>
+                              <%= check_box_tag "agents[#{location.id}][]", agent.id, false, :id => agent.id, class: "agentcheck-#{location.id}", :onclick => "checkboxChanged(this.checked, '#{location.name}');" %>
+                            </td>
+                            <td><%= agent.firstname %> <%= agent.lastname %></td>
+                            <% if agent.role == @agentRole %>
+                              <td>Team Member</td>
+                            <% elsif agent.role == @marketRole %>
+                              <td>Marketing</td>
+                            <% elsif agent.role == @friendRole %>
+                              <td>Fan</td>
+                            <% elsif agent.role == @hrRole %>
+                              <td>HR</td>
+                            <% elsif agent.role == @financeRole %>
+                              <td>Finance</td>
+                            <% elsif agent.role == @managerRole %>
+                              <td>Manager</td>
+                            <% else %>
+                              <td><%= agent.role %></td>
+                            <% end %>
+                          </tr>
+                          <% end %>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+            <div class="card card-flat">
+              <h6 class="location-names">
+                <div class="card-header p-0" role="tab">
+                  <a data-toggle="collapse" data-target="#headquarters" class="collapsed campaign-signup-location" aria-expanded="false" aria-controls="headquarters">
+                    Executives <i class="arrow material-icons">expand_more</i>
+                  </a>
+                </div>
+              </h6>
+              <div id="headquarters" class="collapse" data-parent="#accordian">
+                <table class="table inspectable">
+                  <thead>
+                    <tr>
+                      <th width="1">
+                        <input type="checkbox" class="selectallcheck" onclick="selectAllHQ(this.checked);"/>
+                      </th>
+                      <th>Name</th>
+                      <th>Role</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <% hidden_field_tag :send_owner, '' %>
+                        <%= check_box_tag :send_owner, 'ownerid', false, class: "send_owner", :onclick => "checkboxChanged(this.checked, 'Headquarters');" %>
+                      </td>
+                      <td><%= @user.firstname %> <%= @user.lastname %></td>
+                      <td>Owner</td>
+                    </tr>
+                  </tbody>
+                  <% if @headquarters.present? %>
+                    <% @headquarters.each do |agent| %>
+                    <tr>
+                      <td>
+                        <%= check_box_tag "agents[Headquarters][]", agent.id, false, :id => agent.id, class: "send_owner", :onclick => "checkboxChanged(this.checked, 'Headquarters');" %>
+                      </td>
+                      <td><%= agent.firstname %> <%= agent.lastname %></td>
+                      <% if agent.role == @agentRole %>
+                        <td>Team Member</td>
+                      <% elsif agent.role == @marketRole %>
+                        <td>Marketing</td>
+                      <% elsif agent.role == @friendRole %>
+                        <td>Fan</td>
+                      <% elsif agent.role == @hrRole %>
+                        <td>HR</td>
+                      <% elsif agent.role == @financeRole %>
+                        <td>Finance</td>
+                      <% elsif agent.role == @managerRole %>
+                        <td>Manager</td>
+                      <% else %>
+                        <td><%= agent.role %></td>
+                      <% end %>
+                    </tr>
+                    <% end %>
+                  <% end %>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+        <%= f.button :submit, 'Run Campaign', :class => 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script src = "https://deploy.userpilot.io/24xk34u10.js"></script>
+<script>
+  userpilot.identify(
+
+    "<%= @user.objectId %>", // Used to identify users
+    {
+     name: "<%= @user.firstname %> <%= @user.lastname %>", // Full name
+     email: "<%= @user.email %>",
+     created_at: "<%= @user.createdAt %>"// Email address
+    }
+  );
+</script>

@@ -1,0 +1,521 @@
+<div class="row campaign_container">
+  <div class="col__form">
+    <%= simple_form_for @campaign,
+                        :html => {:class => 'form-horizontal campaigns-form', novalidate: 'novalidate'},
+                        wrapper: :horizontal_form,
+                        wrapper_mappings: {
+                            file: :horizontal_file_input,
+                            boolean: :horizontal_boolean,
+                            check_boxes: :horizontal_radio_and_checkboxes,
+                            radio_buttons: :horizontal_radio_and_checkboxes
+                        } do |f| %>
+        <div id="campaign_carousel" class="carousel" data-wrap="false" data-interval="false">
+          <div class="carousel-inner">
+
+            <div class="carousel-item active container-fluid" data-title="Campaign Details" data-step="1">
+              <div class="campaign-header">
+                <h5 class=campaign-header-text>Campaign Details</h5>
+              </div>
+
+              <div class="form-group file optional input_zebra row">
+                <div class="col-3">
+                  <select name="attachment_type" class="form-control select required" required="required" aria-required="true" id="campaign_attachment">
+                    <option selected="selected" value="image" data-tooltip="Image that showcases what the campaign is about. Landscape images are recommended.">Campaign Image</option>
+                    <option value="video" data-tooltip="You can add a video to your campaign from Youtube or from other video sharing sites.">Campaign Video</option>
+                  </select>
+                </div>
+                <div class="col-9 campaign-attachment-values">
+                  <button type="button" class="btn btn-primary campaign_photo" data-target="#cropImageModal" data-toggle="modal" data-backdrop="static">
+                    Upload an image!
+                  </button>
+                  <%= f.input :video_url,
+                              :label => false,
+                              wrapper: :combo_video_input,
+                              placeholder: 'Paste Video URL here (Youtube, Vimeo, Dailymotion)'
+                  %>
+                </div>
+              </div>
+              <%= f.input :offer_title,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This is the main, bold message recipients will see upon opening the campaign. Make it concise and appealing.">Campaign Title</span>'.html_safe,
+                          placeholder: 'Add campaign headline here',
+                          :required => true
+              %>
+              <%= f.input :run_interval,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="The date range for which this campaign will be active, redeemable, and viewable.">Campaign &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>Date Range</span>'.html_safe,
+                          placeholder: 'Click here to select date and time of Campaign',
+                          :required => true,
+                          :as => :string,
+                          :input_html => {:class => 'daterange'},
+                          :wrapper_html => {:class => 'input_zebra'}
+              %>
+              <div class="row">
+                <label class="col-sm-3">
+                  <span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This is a description of the campaign, and any specific details you\'d like to include.">Campaign Details</span>
+                </label>
+                <div class="col-sm-9 rich-text__height">
+                  <div id="full-editor"></div>
+                </div>
+              </div>
+              <%= f.input :details,
+                          as: :hidden
+              %>
+              <div class="row">
+                <label class="col-sm-3">
+                  <span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This is a description of the campaign, and any specific details you\'d like to include.">Conditions</span>
+                </label>
+                <div class="col-sm-9 rich-text__height">
+                  <div id="full-editor-conditions"></div>
+                </div>
+              </div>
+              <%= f.input :offer_condition,
+                          as: :hidden
+              %>
+              <!-- <%= f.input :offer_condition,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Are there any restrictions or stipulations to the offer? If so, state them here.">Conditions</span>'.html_safe,
+                          placeholder: 'State any restrictions or limitations here (optional)',
+                          as: :text
+              %> -->
+              <%= f.input :age,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="If, for any reason, you need to include an age restriction, please select the appropriate option here. ">Age Restriction</span>'.html_safe,
+                          :collection => @age_restriction,
+                          :selected => @age_restriction[0],
+                          :required => true,
+                          :wrapper_html => {:class => 'input_zebra'}
+              %>
+              <%= f.input :cta,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Create your own unique CTA or select one from the predesignated selection">Call To Action</span>'.html_safe,
+                          :input_html => {:class => 'cta_input'},
+                          :wrapper_html => {:class => 'cta_custom input_zebra'},
+                          placeholder: 'Add call to action',
+                          :required => true
+              %>
+              <%= f.input :redirect_url,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Paste a link to which each recipient will be directed upon tapping the CTA button. Some examples: an EventBrite page for an RSVP, a checkout page with a product added to the cart, or an application form. ">Redirect URL</span>'.html_safe,
+                          placeholder: 'Enter URL to which a recipient will be redirected after tapping the CTA',
+                          :wrapper_html => {:class => 'cta_custom'},
+                          :input_html => {:class => 'redirect_input'},
+                          :required => true
+              %>
+            </div>
+            <div class="carousel-item container-fluid" data-title="Select Location and Team" data-step="2">
+              <div class="campaign-header">
+                <h5 class=campaign-header-text>Select Team Members</h5>
+              </div>
+              <div class="card card-flat">
+                <div class="card-body inspectable">
+                  <div class="accordian" id="accordian">
+                    <% @locations.each_with_index do |location, index| %>
+                      <% if @agents.any?{|agent| agent.location_id == location.id} %>
+                        <div class="card card-flat">
+                          <div class="card-header" role="tab">
+                            <h6 class="location-names">
+                              <% if index == 0%>
+                              <a data-toggle="collapse" data-target="#<%= location.id %>" class="campaign-signup-location" aria-expanded="true" aria-controls="<%= location.id %>">
+                                <%= location.name %><i class="arrow material-icons">expand_more</i>
+                              </a>
+                              <% else %>
+                              <a data-toggle="collapse" data-target="#<%= location.id %>" class="collapsed campaign-signup-location" aria-expanded="false" aria-controls="<%= location.id %>">
+                                <%= location.name %><i class="arrow material-icons">expand_more</i>
+                              </a>
+                              <% end %>
+                            </h6>
+                          </div>
+                          <% if index == 0%>
+                          <div id="<%= location.id %>" class="collapse show" data-parent="#accordian">
+                          <% else %>
+                          <div id="<%= location.id %>" class="collapse" data-parent="#accordian">
+                          <% end %>
+                            <table class="table inspectable">
+                              <thead>
+                                <tr>
+                                  <th width="1">
+                                    <input type="checkbox" class="selectallcheck" value="<%= location.id %>" onclick="selectAll(this.checked, '<%= location.id %>', '<%= location.name %>');"/>
+                                  </th>
+                                  <th>Name</th>
+                                  <th>Role</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% @agents.each do |agent| %>
+                                  <% if agent.location_id == location.id %>
+                                    <tr>
+                                      <td>
+                                        <%= check_box_tag "agents[#{location.id}][]", agent.id, false, :id => agent.id, class: "agentcheck-#{location.id}", :onclick => "checkboxChanged(this.checked, '#{location.name}');" %>
+                                      </td>
+                                      <td><%= agent.firstname %> <%= agent.lastname %></td>
+                                      <% if agent.role == @agentRole %>
+                                        <td>Team Member</td>
+                                      <% elsif agent.role == @marketRole %>
+                                        <td>Marketing</td>
+                                      <% elsif agent.role == @friendRole %>
+                                        <td>Fan</td>
+                                      <% elsif agent.role == @hrRole %>
+                                        <td>HR</td>
+                                      <% elsif agent.role == @financeRole %>
+                                        <td>Finance</td>
+                                      <% elsif agent.role == @managerRole %>
+                                        <td>Manager</td>
+                                      <% else %>
+                                        <td><%= agent.role %></td>
+                                      <% end %>
+                                    </tr>
+                                  <% end %>
+                                <% end %>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      <% end%>
+                    <% end %>
+                    <% if @headquarters.present? %>
+                      <div class="card card-flat">
+                        <h6 class="location-names">
+                          <div class="card-header p-0" role="tab">
+                            <h6 class="location-names">
+                              <a style="padding-left: 17px;" data-toggle="collapse" data-target="#headquarters" class="collapsed campaign-signup-location" aria-expanded="false" aria-controls="headquarters">
+                                  Executives <i class="arrow material-icons">expand_more</i>
+                              </a>
+                            </h6>
+                          </div>
+                        </h6>
+                        <div id="headquarters" class="collapse" data-parent="#accordian">
+                          <table class="table inspectable">
+                            <thead>
+                              <tr>
+                                <th width="1">
+                                  <input type="checkbox" class="selectallcheck" onclick="selectAllHQ(this.checked);"/>
+                                </th>
+                                <th>Name</th>
+                                <th>Role</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% @headquarters.each do |agent| %>
+                                <tr>
+                                  <td>
+                                    <%= check_box_tag "agents[Headquarters][]", agent.id, false, :id => agent.id, class: "send_owner", :onclick => "checkboxChanged(this.checked, 'Headquarters');" %>
+                                  </td>
+                                  <td><%= agent.firstname %> <%= agent.lastname %></td>
+                                  <% if agent.role == @agentRole %>
+                                    <td>Team Member</td>
+                                  <% elsif agent.role == @marketRole %>
+                                    <td>Marketing</td>
+                                  <% elsif agent.role == @friendRole %>
+                                    <td>Fan</td>
+                                  <% elsif agent.role == @hrRole %>
+                                    <td>HR</td>
+                                  <% elsif agent.role == @financeRole %>
+                                    <td>Finance</td>
+                                  <% elsif agent.role == @managerRole %>
+                                    <td>Manager</td>
+                                  <% else %>
+                                    <td><%= agent.role %></td>
+                                  <% end %>
+                                </tr>
+                              <% end %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class='col-6'>
+                  <h6 style="color: #102BD3; margin-left: 35px; margin-bottom: 20px; margin-top: 10px;">Send To Owner</h6>
+                </div>
+                <div class="col-6">
+                  <div style="margin-top:8px;">
+                    <%= f.input :send_owner,
+                                :label => "Send To #{@user.firstname} #{@user.lastname}",
+                                as: :boolean, checked_value: true, unchecked_value: false,
+                                :required => true
+                    %>
+                  </div>
+                </div>
+              </div>
+              <h6 style="color: #102BD3; margin-left: 35px; margin-bottom: 20px; margin-top: 20px;">Associate Campaign with specific Location</h6>
+              <div class='row' style="padding-left: 35px; padding-right: 35px;">
+                <div class='col'>
+                  <%= f.input :owner_location,
+                              :collection => @locations,
+                              :label_method => :name,
+                              :value_method => :id,
+                              :label => 'Location',
+                              :include_blank => false,
+                              :include_hidden => false,
+                              :multiple => false,
+                              input_html: {multiple: false}
+                  %>
+                </div>
+              </div>
+              <%= f.input :num_agents, input_html: {:class => 'num_agents'}, as: :hidden %>
+              <%= f.input :num_coupons, input_html: {:class => 'num_coupons'}, as: :hidden %>
+              <%= f.input :run_date, input_html: {:class => 'run_date'}, as: :hidden %>
+              <%= f.input :start_date, input_html: {:class => 'start_date'}, as: :hidden %>
+              <%= f.input :cta_text, input_html: {:class => 'cta_text'}, as: :hidden %>
+              <%= f.input :video_thumb_url, input_html: {:class => 'video_thumb_url'}, as: :hidden %>
+            </div>
+            <div class="carousel-item container-fluid" data-title="Marketing Data" data-step="3">
+              <div class="campaign-header">
+                <h5 class=campaign-header-text>Marketing Info</h5>
+              </div>
+              <%= f.input :add_upcoming, input_html: {:class => 'add_upcoming_val', :value => 'true'}, as: :hidden %>
+              <!-- <%= f.input :limited_coupons,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Check the box if you want to limit messages per Team Member.">Limit Shares</span>'.html_safe,
+                          as: :boolean,
+                          boolean_style: :inline,
+                          :hint => 'Check the box if you want to limit messages per Team Member',
+                          :wrapper_html => {:class => 'input_zebra'},
+                          :input_html => {:class => 'limited_coupons'}
+              %>
+              <%= f.input :coupons,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="With how many recipients do you want your Team Members to share this campaign?">Available Messages</span>'.html_safe,
+                          :hint => 'Messages per Team Member:',
+                          input_html: {step: '1', :class => 'coupon_num'},
+                          :wrapper_html => {:class => 'coupon_wrapper'},
+                          as: :spinner
+              %> -->
+              <%= f.input :upcoming,
+                          collection: ['Include newly invited Employees'],
+                          :label => '',
+                          as: :check_boxes,
+                          :checked => false,
+                          :required => true,
+                          :input_html => {:class => 'add_upcoming'}
+              %>
+              <div style="margin-top: 25px;"></div>
+              <%= f.input :pixel_id,
+                    :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Paste your tracking code to embed an ad retargeting pixel on your campaign. ">Tracking Pixel ID</span>'.html_safe,
+                    placeholder: 'Enter Facebook Pixel ID (optional)'
+              %>
+              <%= f.input :target_audience,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Inform your Team who this campaign is for">Target Audince</span>'.html_safe,
+                          as: :text
+              %>
+            </div>
+            <div class="carousel-item container-fluid" data-title="Review & Send" data-step="4">
+              <div class="campaign-header">
+                <h5 class=campaign-header-text>Review</h5>
+              </div>
+              <div class="form-group check_boxes input_zebra">
+                <label class="col-sm-4 control-label">Send Times:</label>
+                <div class="col-sm-8">
+                  <div><i class="fa fa-check" aria-hidden="true"></i><span class="view_run_date"></span></div>
+                </div>
+              </div>
+              <div class="form-group check_boxes">
+                <label class="col-sm-4 control-label">Sending To:</label>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="team-member-list" style="margin-top: 20px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group check_boxes input_zebra">
+                <label class="col-sm-4 control-label">Note:</label>
+                <div class="col-11">
+                  <p style="padding-left: 20px; margin-top: 0px !important; font-weight: 200;">Please review your campaign to ensure the information and Team Members are
+                    correct.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <a class="btn btn-outline-danger" href="/campaigns" style="margin-top: 20px; margin-left: 15px;">Cancel</a>
+          </div>
+          <div class="col-sm-6 float-right">
+            <div class="float-right" style="padding-right: 15px;">
+              <input type="button" class="btn btn-default prev_button" value="Previous Step"/>
+              <input type="button" class="btn btn-default next_button" value="Next Step"/>
+              <%= f.button :submit, 'Send / Schedule', :class => 'submit_button' %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+  <div class="col__preview">
+    <div class="campaigns__preview_frame">
+      <div class="campaigns__preview_content">
+        <div id="offer_confirm" class="container-fluid">
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="offerPic"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="offerVideo"></div>
+        </div>
+
+        <div id="offerBlock" class="container-fluid">
+          <div id="offerBlockWrapper">
+            <div class="row">
+              <div class="col" id="offerTitle">
+                <h1 id="view_offer_title"></h1>
+              </div>
+            </div>
+
+           <div class="row" id="couponCode">
+              <div class="col col-with-padding">
+                <h2 id="view_coupon_code"></h2>
+                <p>Present this code to merchant</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col" id="offerConditions">
+                <ul>
+                  <li><span class="validity"></span><span
+                  class="description">Valid: <span class="view_run_date">No Date</span></span>
+                  </li>
+                  <li><span class="peopleAge"></span>
+                    <span class="description" id="view_offer_age">All Ages</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+            <div class="row" id="offerDetailsRow">
+              <div class="col col-with-padding" id="offerDetails">
+                <h3>Details</h3>
+                <p id="offerDetailsText"></p>
+              </div>
+            </div>
+
+            <div class="row" id="campaignConditionsRow">
+              <div class="col col-with-padding" id="campaignConditions">
+                <h3>Conditions</h3>
+                <p id="offerConditionsText"></p>
+              </div>
+            </div>
+
+            <div class="row" id="locationsRow">
+              <div class="col col-with-padding" id="contacts">
+                <h3>Contact</h3>
+                <% @locations.each_with_index do |location, index| %>
+                  <div class="row contact-location location-row" data-location="<%= location.id %>">
+                    <% if location.phone.present? %>
+                      <div class="col m-0 p-0"><a href="tel:<%= location.phone %>" target="_blank"><span class="phone"></span>Call</a></div>
+                    <% end %>
+                    <% if location.url.present? %>
+                        <div class="col m-0 p-0"><a href="<%= location.http_url %>" target="_blank"><span class="web"></span>Website</a></div>
+                    <% end %>
+                    <% if location.address.present? %>
+                        <div class="col m-0 p-0"><a href="http://maps.google.com/?q=<%= location.full_address %>" target="_blank"><span class="location"></span>Map</a></div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="row" id="redeemButtonBlock">
+              <div class="col">
+                <div id="redeemButtonWrapper">
+                  <form id="previewForm" method="get" target="_blank">
+                    <button type="submit" class="redeem-button"></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  (function() {
+    // Initialize editor with custom theme and modules
+
+    var quill = new Quill('#full-editor', {
+      modules: {
+        toolbar: [
+          ['bold', 'italic'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ]
+      },
+      placeholder: 'Describe your campaign here',
+      theme: 'snow' // or 'bubble'
+    });
+
+    quill.on('text-change', function() {
+      document.getElementById("campaign_details").value = JSON.stringify(quill.getContents().ops);
+      var quillPhone = document.getElementById("offerDetailsText");
+      quillPhone.innerHTML = quill.root.innerHTML;
+    });
+
+    var quillConditions = new Quill('#full-editor-conditions', {
+      modules: {
+        toolbar: [
+          ['bold', 'italic'],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ]
+      },
+      placeholder: 'Add any conditions here',
+      theme: 'snow' // or 'bubble'
+    });
+
+    quillConditions.on('text-change', function() {
+      document.getElementById("campaign_offer_condition").value = JSON.stringify(quillConditions.getContents().ops);
+      var quillPhoneCon = document.getElementById("offerConditionsText");
+      quillPhoneCon.innerHTML = quillConditions.root.innerHTML;
+    });
+
+    // quill.setContents([
+    //   { value: 'Describe your campaign here' },
+    // ]);
+
+  })()
+</script>
+<div class="modal fade" tabindex="-1" role="dialog" id="cropImageModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a photo</h5>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="fileInput" accept="image/*" />
+        <p>
+          To zoom in and zoom out, use the page scrolling function over the photo.
+        </p>
+        <div class="canvas-div">
+          <canvas id="canvas">
+            Your browser does not support HTML5
+          </canvas>
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="uploadConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmSendCampaign" aria-labelledby="Are you ready">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Are You Ready?</h1>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img src="<%=image_path('checkPhone.png')%>">
+        <p class="modal-title">Ready to send this campaign to your Fans?</p>
+        <p>Once you send, you cannot edit</p>
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="sendConfirmed">Send now</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelSend">Cancel</button>
+        </div>
+        <p >Your campaign looks awesome!</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+<div id="onboarding">
+  <div class="container top-navigation">
+    <div class="column">
+      <h3>SpeakEasy <span class="pull-right comment skip" data-target="#onboardingCarousel" data-slide-to="5">skip</span></h3>
+    </div>
+  </div>
+
+  <div id="onboardingCarousel" class="carousel slide container" data-wrap="false" data-interval="false">
+    <div class="carousel-inner">
+      <div class="item active container-fluid">
+        <div class="row">
+          <div class="column center-block welcome welcome_2_1"></div>
+        </div>
+        <div class="row">
+          <div class="column center-block">
+            <h1>Speak Easy!</h1>
+            <p>Share exclusive gifts, deals, and<br>
+              content with your friends<br>
+              and family!</p>
+          </div>
+        </div>
+      </div>
+      <div class="item container-fluid">
+        <div class="row">
+          <div class="column center-block welcome welcome_1_2"></div>
+        </div>
+        <div class="row">
+          <div class="column center-block">
+            <h1>Treat Your Friends!</h1>
+            <p>Quickly pass gifts and deals to your<br>
+              friends while making a positive<br>
+              impact on your company. </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="item container-fluid">
+        <div class="row">
+          <div class="column center-block welcome welcome_2_3"></div>
+        </div>
+        <div class="row">
+          <div class="column center-block">
+            <h1>Quick and Easy!</h1>
+            <p>Share content your manager<br>
+              creates to friends you think will be<br>
+              interested, through the app, quickly. </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="item container-fluid">
+        <div class="row">
+          <div class="column center-block welcome welcome_1_4"></div>
+        </div>
+        <div class="row">
+          <div class="column center-block">
+            <h1>Get Rewarded!</h1>
+            <p>SpeakEasy lets managers reward<br>
+              you when you go out of your way<br>
+              to make a positive impact. </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="item container-fluid">
+        <div class="row">
+          <div class="column center-block welcome welcome_2_5"></div>
+        </div>
+        <div class="row">
+          <div class="column center-block">
+            <h1>Get Started!</h1>
+            <p>Take a few moments now to create<br>
+              an account, and download the app<br>
+              to get started. Enjoy!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="item container signup">
+        <div class="page-header">
+          <h1>Join the <%= @locations.join(', ') if @locations %> team!</h1>
+          <p>Create your account!</p>
+        </div>
+        <%= simple_form_for @user,
+                            :url => wizard_path,
+                            :method => :put,
+                            :html => {:class => 'form-horizontal user-form'},
+                            wrapper: :horizontal_form,
+                            wrapper_mappings: {
+                                file: :horizontal_file_input,
+                            } do |f| %>
+            <hr>
+            <%= f.input :username, :required => true %>
+            <%= f.input :password, :required => true, :input_html => {:minlength => 6 } %>
+            <%= f.input :password_confirmation, :required => true, :input_html => {:minlength => 6 } %>
+            <%= f.input :firstname, :label => 'First Name', :required => true %>
+            <%= f.input :lastname,  :label => 'Last Name',  :required => true %>
+            <%= f.input :country, as: :country,
+                        priority: ['US'],
+                        include_blank: 'Select a country',
+                        :input_html => {
+                            :required => true
+                        },
+                        :required => true
+            %>
+            <%= f.input :email, :required => true %>
+            <%= f.input :invite_code, :as => :hidden %>
+            <%= f.input :photo, :label => "Profile Picture", as: :file %>
+            <%= f.input :role, :as => :hidden %>
+            <div class="form-group">
+              <div class="col-sm-6 col-sm-offset-3" id="user_photo_preview"></div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-6 col-sm-offset-3">
+                <div class="checkbox">
+                  <%
+                    c = ParseResource::ParseConfig.config
+                    privacy_policy_url   = c['params']['privacy_policy_url']
+                  %>
+                  <label>
+                    <input type="checkbox" required id="tos_accept_check" name="user[tos_version]"> I accept the
+                    <a href="#" data-toggle="modal" data-target="#TOSModal">Terms and Conditions</a> and <a class="privacyPolicy" href="<%= privacy_policy_url %>" target="_blank">Privacy Policy</a>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-2 col-xs-6  col-md-offset-3">
+                <%= f.button :submit, 'Go!', :class => 'btn-block btn-success' %>
+              </div>
+            </div>
+
+        <% end %>
+
+      </div>
+
+      <div class="container bottom-navigation">
+        <div class="col-xs-4">
+          <ol class="carousel-indicators">
+            <li data-target="#onboardingCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#onboardingCarousel" data-slide-to="1"></li>
+            <li data-target="#onboardingCarousel" data-slide-to="2"></li>
+            <li data-target="#onboardingCarousel" data-slide-to="3"></li>
+            <li data-target="#onboardingCarousel" data-slide-to="4"></li>
+          </ol>
+        </div>
+        <div class="col-xs-5 comment">
+          tap arrow
+        </div>
+        <div class="col-xs-3"><a href="#onboardingCarousel" data-slide="next">
+          <span class="nextArrow pull-right"></span>
+        </a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="TOSModal" tabindex="-1" role="dialog" aria-labelledby="Terms of Service Modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Terms Of Service</h4>
+      </div>
+      <div class="modal-body">
+        <% cache do %>
+            <%
+              c = ParseResource::ParseConfig.config
+              tos_version   = c['params']['current_tos_version'] || 1
+              terms = Terms.where(:version => tos_version).first
+            %>
+            <% if terms.present? %>
+                <%= simple_format(terms.text) %>
+            <% end %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="tos_decline">Decline</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="tos_accept">Accept</button>
+      </div>
+    </div>
+  </div>
+</div>

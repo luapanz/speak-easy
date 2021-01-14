@@ -1,0 +1,121 @@
+<div class="container-fluid">
+  <% if @valid %>
+    <% if @expired %>
+      <div class="row">
+        <div class="col-12 col-md-3 logo-area">
+          <div class="logo-center">
+            <div>
+              <% if @invite.logo.present? %>
+                <img class="enroll-logo" src="<%= @invite.logo %>">
+              <% else %>
+                <img class="enroll-logo" src="<%= asset_path('nav_logo_blue.png') %>">
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-10 detail-area" style="padding-left: 100px; padding-right: 100px; text-align: center">
+          <h5 style="margin-top: 400px;">Sorry. This link has expired</h5>
+          <p style="margin-top: 20px;">
+            Please contact the business for a new invite link
+          </p>
+      </div>
+    <% else %>
+      <div class="row">
+        <div class="col-12 col-md-3 logo-area">
+          <div class="logo-center">
+            <div>
+              <% if @invite.logo.present? %>
+                <img class="enroll-logo" src="<%= @invite.logo %>">
+              <% else %>
+                <img class="enroll-logo" src="<%= asset_path('nav_logo_blue.png') %>">
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-9 enroll-detail-area">
+          <div class="enroll-message">
+            <%= @message %>
+          </div>
+          <div class="enroll-desktop-view">
+            <div class="enroll-phone-message">
+              <span class="agents-black">Enter your mobile phone number below to receive the App Store link to our SpeakEasy Team.
+            </div>
+            <div class="row" style="margin-top: 10px;">
+              <div class="col-12 col-md-6 form-group mr-md-auto ml-md-auto ">
+                <input type="number" class="form-control enroll-phone" id="enroll-phone" placeholder="Phone Number">
+              </div>
+            </div>
+            <div class="custom-control custom-checkbox agents-checkbox">
+              <input type="checkbox" class="custom-control-input terms" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1" style="padding-top: 4px;">By checking this box, I am providing consent to be sent an SMS Message with a link to the SpeakEasy mobile application.</label>
+            </div>
+            <div class="logo-center">
+              <span id="enroll-error" style="display: none; color: #F44336; font-weight: 500;"></span>
+              <span id="enroll-success" style="display: none; color: #4CAF50; font-weight: 500;"></span>
+            </div>
+            <div class="logo-center">
+              <input type="hidden" id="bid" value="<%= @invite.business_id %>" />
+              <input type="hidden" id="lid" value="<%= @invite.location_id %>" />
+              <button class="btn btn-primary agents-submit">Submit</button>
+            </div>
+          </div>
+          <div class="enroll-mobile-view logo-center">
+            <% if @invite.dynamic_link.present? %>
+              <a target="_blank" href="<%= @invite.dynamic_link %>" class="btn btn-primary agents-submit-mobile">Get Started</a>
+            <% else %>
+            <div class="enroll-phone-message">
+              <span class="agents-black">Enter your mobile phone number below to receive the App Store link to our SpeakEasy Team.
+            </div>
+            <div class="row" style="margin-top: 10px;">
+              <div class="col-12 col-md-6 form-group mr-md-auto ml-md-auto ">
+                <input type="number" class="form-control enroll-phone" id="enroll-phone" placeholder="Phone Number">
+              </div>
+            </div>
+            <div class="custom-control custom-checkbox agents-checkbox">
+              <input type="checkbox" class="custom-control-input terms" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1" style="padding-top: 4px;">By checking this box, I am providing consent to be sent an SMS Message with a link to the SpeakEasy mobile application.</label>
+            </div>
+            <div class="logo-center">
+              <span id="enroll-error" style="display: none; color: #F44336; font-weight: 500;"></span>
+              <span id="enroll-success" style="display: none; color: #4CAF50; font-weight: 500;"></span>
+            </div>
+            <div class="logo-center">
+              <input type="hidden" id="bid" value="<%= @invite.business_id %>" />
+              <input type="hidden" id="lid" value="<%= @invite.location_id %>" />
+              <button class="btn btn-primary agents-submit">Submit</button>
+            </div>
+            <% end %>
+          </div>
+          <div class="enroll-privacy">
+            <a href="https://account.justspeakeasy.com/legal/privacy" target="_blank">Privacy and Terms</a>
+          </div>
+          <div class="enroll-speakeasy">
+            <a href="https://justspeakeasy.com" target="_blank">
+              <img src="<%= asset_path('nav_logo_blue.png') %>" style="height: 50px;">
+            </a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="row">
+      <div class="col-3 mr-md-auto ml-md-auto" style="text-align: center">
+        <img src="<%= asset_path('nav_logo_blue.png') %>" style="height: 175px; margin-top: 25px;">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mr-md-auto ml-md-auto" style="text-align: center; margin-top: 200px;">
+        <h5>Uh-Oh! Something is wrong with this link!</h5>
+        <p>It appears that this link does not exist. Please try again with a different link</p>
+      </div>
+    </div>
+  <% end %>
+</div>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102703766-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-102703766-1');
+</script>

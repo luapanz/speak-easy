@@ -1,0 +1,77 @@
+$sans-serif-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+
+// Border thicknesses
+$none: 0 !default;
+$border-thin: 1px !default;
+$border-thick: 2px !default;
+
+// Whites
+$white-color: #fdfcfc !default;
+$white-bg: #fff !default;
+
+// Blacks
+$black-bg: rgba(30, 30, 30, 0.97) !default;
+$light-black: #444 !default;
+$black-color: #2c2c2c !default;
+$black-hr: #444 !default;
+$dark-color: #283d52;
+
+// Backgrounds
+// $main-bg: #eef5fb !default;
+$main-bg: #EFF3F7 !default;
+$dark-background: #555 !default;
+
+// SpeakEasy Colors
+// $sePrimary: #102BD3;
+// $sePrimaryDark: #0001a0;
+$sePrimary: #2085FF;    
+$sePrimaryDark: #2085FF;
+$sePrimaryLight: #060607;
+$seSecondary: #A7A9AC;
+$seSecondaryDark: #787a7d;
+$seNavTrial: #328DFB;
+
+@include theme-colors((
+//  text-color: #2c2c2c,
+ text-color: #4D5A77,
+ 
+ brand-default: $sePrimary,
+ brand-primary: $sePrimary,
+ brand-success: #73c16b,
+ brand-info: #5cc6d2,
+ brand-warning: #e08e45,
+ brand-danger: #c55e5e,
+ brand-light: #fff,
+ brand-dark: $dark-color,
+
+ sidenav-menu-bg: $sePrimaryDark,
+ sidenav-header-color: white,
+ sidenav-header-bg: $sePrimaryDark,
+ sidenav-header-link: lighten($seSecondary, 25%),
+ sidenav-header-link-hover: white,
+ sidenav-color: lighten($seSecondary, 25%),
+ sidenav-menu-item-bg: $seSecondaryDark,
+ sidenav-menu-item-color: #FAFAFA,
+ sidenav-menu-item-icon: #FAFAFA,
+
+ tooltip-bg: lighten($brand-primary, 25%),
+ tooltip-color: white
+));
+
+// Card Chat
+$card-chat-bg: $gray-400;
+
+$card-border-radius: $border-radius-small;
+
+$navbar-background: #102BD3;
+$navbar-box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
+
+$card-outer-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.1), 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+
+$navbar-navlink-color: $white-color;
+$navbar-navlink-hover-bg: $opacity-2;
+$form-input-radius: $btn-round-radius;
+
+$navbar-toggle: str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-dark-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"), "#", "%23");
+
+$button-default-bg: $gray-300;

@@ -1,0 +1,56 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h5 class="location-header">Settings</h5>
+    </div>
+  </div>
+  <hr class="location_line"/>
+  <% if @user.role == Role::OWNER || @user.role == Role::MARKETING || @user.role == Role::FINANCE%>
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <div class="card h-100 d-flex flex-column justify-content-between">
+          <i class="fa fa-bar-chart display-1 card-img-top" style="text-align: center;"></i>
+          <div class="card-body">
+            <h5 class="card-title">Business</h5>
+            <div class="card-text">
+              Change business settings for your business account.
+            </div>
+          </div>
+          <div class="card-footer text-right">
+            <a href="<%= business_url %>" class="card-button">Edit</a>
+          </div>
+        </div>
+      </div>
+      <% if @user.role == Role::OWNER || @user.role == Role::FINANCE%>
+        <div class="col-12 col-md-3">
+          <div class="card h-100 d-flex flex-column justify-content-between">
+            <i class="fa fa-usd display-1 card-img-top" style="text-align: center;"></i>
+            <div class="card-body">
+              <h5 class="card-title">Subscriptions</h5>
+              <div class="card-text">
+                Make changes to your payment plan.
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <a href="/billing" class="card-button">Edit</a>
+            </div>
+          </div>
+        </div>
+        <% end %>
+    </div>
+  <% else %>
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <div class="card h-100 d-flex flex-column justify-content-between">
+        <i class="fa fa-exclamation-circle display-1 card-img-top" style="text-align: center;"></i>
+        <div class="card-body">
+          <h5 class="card-title">No Settings Available</h5>
+          <div class="card-text">
+            Sorry. Your account does not have access to Business Settings.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

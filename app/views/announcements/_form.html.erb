@@ -1,0 +1,203 @@
+<div class="row campaign_container">
+  <div class="col__form">
+    <%= simple_form_for @announcement,
+                        :html => {:class => 'form-horizontal campaigns-form'},
+                        wrapper: :horizontal_form,
+                        wrapper_mappings: {
+                            file: :horizontal_file_input,
+                            boolean: :horizontal_boolean,
+                            check_boxes: :horizontal_radio_and_checkboxes,
+                            radio_buttons: :horizontal_radio_and_checkboxes
+                        } do |f| %>
+        <div id="campaign_carousel" class="carousel" data-wrap="false" data-interval="false">
+          <div class="carousel-inner">
+
+            <div class="carousel-item active container-fluid" data-title="Campaign Details" data-step="1">
+              <div class="campaign-header">
+                <h5 class=campaign-header-text>Announcement Detail</h5>
+              </div>
+
+              <div class="form-group file optional input_zebra row">
+                <div class="col-3">
+                </div>
+                <div class="col-9 campaign-attachment-values">
+                  <button type="button" class="btn btn-primary campaign_photo" data-target="#cropImageModal" data-toggle="modal" data-backdrop="static">
+                    Upload a Photo
+                  </button>
+                </div>
+              </div>
+              <%= f.input :title,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="This is the main, bold message recipients will see upon opening the campaign. Make it concise and appealing.">Title</span>'.html_safe,
+                          placeholder: 'Title',
+                          :required => true,
+                          input_html: {value: 'Announcement Title', class: "ann-input"}
+              %>
+              <div class="row">
+                <label class="col-sm-3">
+                  Description
+                </label>
+                <div class="col-sm-9 rich-text__height">
+                  <div id="full-editor"></div>
+                </div>
+              </div>
+              <%= f.input :details,
+                          as: :hidden
+              %>
+              <%= f.input :run_time_frame,
+                          :label => '<span aria-hidden="true" data-toggle="tooltip" data-placement="top" title="If, for any reason, you need to include an age restriction, please select the appropriate option here. ">Run Period</span>'.html_safe,
+                          :collection => ['1 Day', '1 Week', '1 Month'],
+                          :selected => '1 Day',
+                          input_html: {class: "ann-input"},
+                          :wrapper_html => {:class => 'input_zebra'}
+              %>
+              <div class="row">
+                <label class="col-sm-3">
+                  Description
+                </label>
+                <div class="ann-multiselect col-sm-9">
+                  <div class="selectBox" onclick="showCheckboxes()">
+                    <select>
+                      <option>Select locations</option>
+                    </select>
+                    <div class="overSelect"></div>
+                  </div>
+                  <div id="checkboxes">
+                    <% @locations.each do |location| %>
+                      <label>
+                        <input type="checkbox" id="<%= location.id%>" onchange="checkLoc(this)"/><%= location.name %>
+                      </label>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <%= f.input :locations,
+                          as: :hidden
+              %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <a class="btn btn-outline-danger" href="/announcements" style="margin-top: 20px; margin-left: 15px;">Cancel</a>
+          </div>
+          <div class="col-sm-6 float-right">
+            <div class="float-right" style="padding-right: 15px;">
+              <%= f.button :submit, 'Save', :class => 'ann_submit_button' %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+  <div class="col__preview">
+    <div class="campaigns__preview_frame">
+      <div class="campaigns__preview_content">
+        <div class="row">
+          <div class="col ann-title__mg" id="offerTitle">
+            <h1>Announcement</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="offerPic" class="ann-photo"></div>
+          </div>
+        </div>
+
+        <div id="offerBlock" class="container-fluid">
+          <div id="offerBlockWrapper">
+            <div class="col ann-title" id="offerTitle">
+              <h3 class="c__white">Announcement</h3>
+              <h1 id="view_offer_title" class="c__white" style="height: 33px">Announcement Title</h1>
+              <span class="current-date c__white"><%= Time.now.strftime("%b %d, %Y") %></span>
+            </div>
+
+           <div id="quill-phone-1">
+
+            </div>
+
+            <div class="row" id="offerDetailsRow">
+              <div class="col col-with-padding" id="offerDetails">
+                <h3>Details</h3>
+                <p id="offerDetailsText"></p>
+              </div>
+            </div>
+            <script type="text/javascript">
+              (function() {
+                // Initialize editor with custom theme and modules
+
+                var quill = new Quill('#full-editor', {
+                  modules: {
+                    toolbar: [
+                      ['bold', 'italic'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ]
+                  },
+                  placeholder: 'Description here!',
+                  theme: 'snow' // or 'bubble'
+                });
+
+                quill.on('text-change', function() {
+                  console.log('text change');
+                  document.getElementById("announcement_details").value = JSON.stringify(quill.getContents().ops);
+                  var quillPhone = document.getElementById("quill-phone-1");
+                  quillPhone.innerHTML = quill.root.innerHTML;
+                });
+
+                // quill.setContents([
+                //   { value: 'Description here!' },
+                // ]);
+
+              })()
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="cropImageModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a photo</h5>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="fileInput" accept="image/*" />
+        <p>
+          To zoom in and zoom out, use the page scrolling function over the photo.
+        </p>
+        <div class="canvas-div">
+          <canvas id="canvas">
+            Your browser does not support HTML5
+          </canvas>
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="uploadConfirmAnn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="confirmSendCampaign" aria-labelledby="Are you ready">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title">Are You Ready?</h1>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img src="<%=image_path('checkPhone.png')%>">
+        <p class="modal-title">Ready to send this campaign to your Fans?</p>
+        <p>Once you send, you cannot edit</p>
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="sendConfirmed">Send now</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelSend">Cancel</button>
+        </div>
+        <p >Your campaign looks awesome!</p>
+      </div>
+    </div>
+  </div>
+</div>

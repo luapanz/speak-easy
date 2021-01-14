@@ -1,0 +1,41 @@
+// Place all the styles related to the signup controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.account-photo {
+  margin-bottom: 45px !important;
+  margin-top: 0 !important;
+  text-decoration: none !important;
+}
+
+@media screen and (max-width: 450px){
+  .account-photo{
+    display: none;
+  }
+}
+
+#accountCanvas{
+  margin-top: 15px;
+  width: 100%;
+  border: 1px solid #212121;
+  cursor: default;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.change-password-link:link{
+  text-decoration: none !important;
+}
+
+.change-password-link:visited{
+  text-decoration: none !important;
+}
+
+.change-password-link:hover{
+  text-decoration: none !important;
+}
+
+.change-password-link:active{
+  text-decoration: none !important;
+}

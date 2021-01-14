@@ -1,0 +1,57 @@
+<div class="container signup_locations">
+  <div class="page-header">
+    <h1>Create locations</h1>
+  </div>
+  <%= simple_form_for :user,
+                      :url => wizard_path,
+                      :method => :put,
+                      :html => {:class => 'form-horizontal', :id => 'new_user_locations'},
+                      wrapper: :horizontal_form,
+                      wrapper_mappings: {
+                          file: :horizontal_file_input,
+                      } do |f| %>
+      <div class="locations">
+        <% @locations.each_with_index do |l, i| %>
+            <div class="location">
+              <%= render partial: 'location', locals: {f: f, l: l, i: i, field_name: 'locations[]'} %>
+            </div>
+        <% end %>
+        <!-- template for clone -->
+        <div class="location hidden" id="location-proto">
+          <%= render partial: 'location', locals: {f: f, l: Location.new, i: '', field_name: 'locations_proto[]'} %>
+        </div>
+        <!-- -->
+      </div>
+      <% if @can_create_more_locations %>
+
+      <% else %>
+        <!-- Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="locationsRestricted" aria-labelledby="Looks like you've hit your limit">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Looks like you've hit your limit</h4>
+              </div>
+              <div class="modal-body">
+                Need more locations? Buy additional licenses now!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="new_location_cancel" data-location="<%= new_agent_path %>">Later</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="new_location_create" data-location="https://justspeakeasy.com/pricing">Get
+                  More!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="row" style="padding-bottom: 30px;">
+        <div class="col-md-2 col-xs-6  col-md-offset-3">
+          <%= f.button :submit, 'Go to next step', :class => 'btn-block btn-success' %>
+        </div>
+      </div>
+  <% end %>
+
+</div>

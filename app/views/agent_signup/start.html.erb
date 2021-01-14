@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="page-header">
+    <h1>Join a Team</h1>
+    <p>You have an invitation to join a team as <%=@role_name%> — awesome!</p>
+    <p>Enter last 4 digits of your phone number to confirm the invitation.</p>
+  </div>
+  <%= simple_form_for @user,
+                      :url => wizard_path,
+                      :method => :put,
+                      :html => {:class => 'form-horizontal'},
+                      wrapper: :horizontal_form,
+                      wrapper_mappings: {
+                          file: :horizontal_file_input,
+                      } do |f| %>
+      <hr>
+      <%= f.input :invite_code, :required => true %>
+      <%= f.input :phone, :label => 'Last 4 digits of your phone number', :required => true,
+                  :input_html => {:maxlength => 4, :pattern => '\d*'}, :as => :integer %>
+      <%= f.input :role, :as => :hidden %>
+      <hr>
+      <div class="row">
+        <div class="col-md-2 col-xs-6  col-md-offset-3">
+          <button class="btn btn-block btn-success">Go to next step</button>
+        </div>
+      </div>
+
+  <% end %>
+
+</div>

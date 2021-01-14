@@ -1,0 +1,63 @@
+<div class="card card-tabbed  ">
+  <div class="card-header bg-dark text-white">
+    <h6>Announcements</h6>
+  </div>
+
+  <div class="card-body">
+    <div class="tab-content">
+      <div id="one" class="tab-pane fade show active" role="tabpanel1" aria-labelledby="one">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @announcements.present? %>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>End Date</th>
+                <th><center>Number of Views</center></th>
+                <th><center>Number of Likes</center></th>
+                <th><center>Number of Dislikes</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @announcements.each do |announcement| %>
+                  <tr>
+                    <% if announcement.title.present? %>
+                      <td><%= announcement.title %></td>
+                    <% else %>
+                      <td></td>
+                    <% end %>
+                    <% if announcement.end_date.present? %>
+                      <td><%= announcement.end_date.strftime("%b %d, %Y") %></td>
+                    <% else %>
+                      <td></td>
+                    <% end %>
+                    <% if announcement.viewed.present? %>
+                      <td><center><%= announcement.viewed.length %></center></td>
+                    <% else %>
+                      <td><center>0</center></td>
+                    <% end %>
+                    <% if announcement.liked.present? %>
+                      <td><center><%= announcement.liked.length %></center></td>
+                    <% else %>
+                      <td><center>0</center></td>
+                    <% end %>
+                    <% if announcement.disliked.present? %>
+                      <td><center><%= announcement.disliked.length %></center></td>
+                    <% else %>
+                      <td><center>0</center></td>
+                    <% end %>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>No Announcements</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+            <%= paginate @announcements, param_name: :announcement%> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

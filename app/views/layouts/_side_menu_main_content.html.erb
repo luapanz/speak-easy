@@ -1,0 +1,79 @@
+<nav>
+<div class="menu-list">
+  <% if is_upper_management? %>
+    <li class="nav-item active">
+      <a class="nav-link" href="/home/dashboard">
+        <!-- ICON for sidebar -->
+        <%= theme_icon_tag "dashboard" %>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="/campaigns">
+        <!-- ICON for sidebar -->
+        <%= theme_icon_tag "image" %>
+        <span>Campaigns</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link subnav-item" href="/activecampaigns">
+        <!-- ICON for sidebar -->
+        <span>Active Campaigns</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link subnav-item" href="/futurecampaigns">
+        <!-- ICON for sidebar -->
+        <span>Future Campaigns</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link subnav-item" href="/pastcampaigns">
+        <!-- ICON for sidebar -->
+        <span>Past Campaigns</span>
+      </a>
+    </li>
+    <% if @user.role == Role::OWNER || @user.role == Role::MARKETING %>
+    <li class="nav-item active">
+      <a class="nav-link subnav-item" href="/campaigns/new">
+        <!-- ICON for sidebar -->
+        <span>Create New Campaign</span>
+      </a>
+    </li>
+    <% end %>
+    <li class="nav-item active">
+      <a class="nav-link" href="/announcements">
+        <!-- ICON for sidebar -->
+        <%= theme_icon_tag "announcement" %>
+        <span>Announcements</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="/agents">
+        <!-- ICON for sidebar -->
+        <%= theme_icon_tag "user" %>
+        <span>Team Members</span>
+      </a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="/locations">
+        <!-- ICON for sidebar -->
+        <%= theme_icon_tag "map" %>
+        <span>Locations</span>
+      </a>
+        </li>
+  <% end %>
+</div>
+</nav>
+
+<script>
+$(function(){
+       pageUrl = location.pathname;
+       $('nav li a').each(function () {
+            link = $(this);
+            if (link.attr("href") == pageUrl) {
+                link.addClass("active");
+            }
+       });
+   });
+</script>

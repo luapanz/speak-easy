@@ -1,0 +1,37 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h5 class="location-header">Edit Team Member</h5>
+    </div>
+  </div>
+  <hr class="dashboard_line"/>
+  <div class="profile-header jumbotron  d-flex align-items-center justify-content-center flex-column pb-0" style="background: transparent;">
+    <div class="fileinput fileinput-avatar fileinput-new d-flex flex-column align-items-center" data-provides="fileinput" style="height: 180px; width: 200px">
+      <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+        <% if @agent.photo_url.present? %>
+            <img class="rounded-circle profile-image hoverZoomLink" width="128" height="128"
+        data-turbolinks-permanent="true" src="<%= @agent.photo_url %>"
+        alt="<%= "#{@agent.firstname} #{@agent.lastname} photo" %>">
+        <% else %>
+            <img class="rounded-circle profile-image hoverZoomLink" width="128" height="128"
+        data-turbolinks-permanent="true" src="<%= image_path('no_photo3x.png') %>"
+        alt="No photo">
+        <% end %>
+      </div>
+    </div>
+    <h2 class="m-0 mb-2"><%= @agent.firstname %> <%= @agent.lastname %></h2>
+  </div>
+  <%= render 'form' %>
+</div>
+<script src = "https://deploy.userpilot.io/24xk34u10.js"></script>
+<script>
+  userpilot.identify(
+
+    "<%= @user.objectId %>", // Used to identify users
+    {
+     name: "<%= @user.firstname %> <%= @user.lastname %>", // Full name
+     email: "<%= @user.email %>",
+     created_at: "<%= @user.createdAt %>"// Email address
+    }
+  );
+</script>

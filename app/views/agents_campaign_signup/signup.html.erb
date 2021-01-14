@@ -1,0 +1,98 @@
+<div class="container-fluid signup_main">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center justify-content-center mt-5 flex-column" style="margin-top: 25px; margin-bottom: 45px;">
+          <img src="<%= asset_path('pulls-logo-black@2x.png') %>" width="150">
+        </div>
+      </div>
+    </div>
+    <% if @business.present? %>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8 mr-md-auto ml-md-auto ">
+          <div class="card">
+            <div class="card-body">
+              <%= simple_form_for @user,
+                                  :url => wizard_path,
+                                  :method => :put,
+                                  :html => {:class => 'form-horizontal user-form', id: :payment_form},
+                                  wrapper: :horizontal_form,
+                                  wrapper_mappings: {
+                                      file: :horizontal_file_input,
+                                  } do |f| %>
+                    <%= f.input :firstname, :label => "First Name", :required => true %>
+                    <%= f.input :lastname,  :label => "Last Name",  :required => true %>
+                    <%= f.input :email, :required => true %>
+                    <%= f.input :password, :required => true, :input_html => {:minlength => 6 } %>
+                    <%= f.input :password_confirmation, :required => true, :input_html => {:minlength => 6 } %>
+                    <%= f.input :phone, :label => "Phone Number", :required => true %>
+                    <input type="hidden" id="business_param" name="business_param" value="<%= @business.object_id %>" />
+                    <input type="hidden" id="location_param" name="location_param" value="<%= @location %>" />
+                  <div class="form-group">
+                    <div class="col-12 col-sm-offset-3">
+                        <label>
+                          <input type="checkbox" required id="tos_accept_check" name="user[tos_version]" /> I accept the
+                          <a href="#" data-toggle="modal" data-target="#TOSModal">Terms and Conditions</a> and <a class="privacyPolicy" href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                      <div class="col-9 col-md-3 mr-auto ml-auto ">
+                        <%= f.button :submit, 'Join', :style=>'width: 100%;', :class => "btn btn-primary new-location-button" %>
+                      </div>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="TOSModal" tabindex="-1" role="dialog" aria-labelledby="Terms of Service Modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Terms Of Service</h4>
+            </div>
+            <div class="modal-body">
+              <% cache do %>
+                  <%
+                    c = ParseResource::ParseConfig.config
+                    tos_version   = c['params']['current_tos_version'] || 1
+                    terms = Terms.where(:version => tos_version).first
+                  %>
+                  <% if terms.present? %>
+                      <%= simple_format(terms.text) %>
+                  <% end %>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="tos_accept">Accept</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% else %>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-8 mr-md-auto ml-md-auto ">
+          <div class="card">
+            <div class="card-header">
+              <h4>Sorry!</h4>
+            </div>
+            <div class="card-body">
+              This link is not valid. To signup with a business you have to be invited.
+              If you are wishing to enroll your own business on the SpeakEasy platform
+              please check out <a href="/signup">this page</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+</div>

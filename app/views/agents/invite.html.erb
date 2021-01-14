@@ -1,0 +1,133 @@
+<div class="container-fluid" style="margin-top: -25px; margin-right: -15px;">
+  <%= simple_form_for @invite,
+    :url => "createlink",
+    :remote => true,
+    wrapper: :vertical_form,
+    wrapper_mappings: {
+        file: :horizontal_file_input,
+        boolean: :horizontal_boolean
+    } do |f| %>
+    <div class="row">
+      <div class="col-3 logo-area">
+        <div class="logo-center">
+          <% if @business.logo_url.present? %>
+            <div id="inviteBusinessLogo">
+              <img class="agents-business-logo" src="<%= @business.logo_url %>" alt="<%= "#{@business.name} logo" %>">
+              <input type="hidden" id="business-url" value="<%= @business.logo_url %>" />
+            </div>
+          <% else %>
+            <div id="inviteBusinessLogo">
+              <img class="agents-business-logo" src="<%= asset_path('nav_logo_blue.png') %>" alt="SpeakEasy">
+              <input type="hidden" id="business-url" value="<%= asset_path('nav_logo_blue.png') %>" />
+            </div>
+          <% end %>
+          <button id="upload-photo-button" type="button" class="btn btn-outline-primary agents-logo-button" data-target="#cropLogoModal" data-toggle="modal" data-backdrop="static" disabled>
+            Change Logo
+          </button>
+          <div class="agents-red" style="margin-bottom: 15px;">
+            Choose which location and role users that receive this link will be assigned.
+          </div>
+          <%= f.input :location_id,
+                      :collection => @locations,
+                      :label_method => :name,
+                      :value_method => :id,
+                      :label => false,
+                      :hint => 'Location',
+                      :include_blank => false,
+                      :include_hidden => false,
+                      :multiple => false,
+                      input_html: {multiple: false, :class => 'enroll-location'},
+                      :required => true
+          %>
+          <% @locations.each do |location| %>
+            <input type="hidden" id="<%= location.id %>" value="<%= location.logo_url %>" />
+          <% end %>
+          <%= f.input :role,
+                      :collection => @roles,
+                      :label => false,
+                      :hint => 'Position',
+                      value_method: :last,
+                      selected: @roles[0],
+                      :include_blank => false,
+                      :include_hidden => false,
+                      :multiple => false,
+                      input_html: {multiple: false},
+                      :required => true
+          %>
+          <div>
+            <select class="form-control" id="expire-select">
+              <option value="1">Expires in 24 Hours</option>
+              <option value="2">Expires in 48 Hours</option>
+              <option value="3">Expires in 72 Hours</option>
+            </select>
+            <input type="hidden" name="enrollexpire" id="enrollexpire" value="1" />
+          </div>
+        </div>
+      </div>
+      <div class="col-9 detail-area">
+        <div style="margin-top: 20px;">
+          <%= f.text_area :message, :class => "tinymce", :rows => 10, :cols => 90 %>
+          <%= tinymce %>
+        </div>
+        <div class="row" style="margin-top: 50px; margin-bottom: 50px;">
+            <div class="col-4">
+              <%= f.button :submit, 'Create Link', :class => 'btn btn-primary agents-submit'%>
+            </div>
+            <div class="col-8">
+              <label for="share-link" class="agents-red">Copy this link to share with your team.</label>
+              <div class="input-group">
+                <input id="share-link" type="text" class="form-control" readonly>
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" id="enroll-copy" type="button">
+                    Copy
+                  </button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="agents-red" style="width: 100%; text-align: center;">Team Member will enter Phone Number here.</div>
+        <div style="width: 100%; text-align: center;">
+          <span class="agents-black">Enter your mobile phone number below to receive the App Store link to our SpeakEasy Team.
+        </div>
+        <div class="row" style="margin-top: 10px;">
+          <div class="col-6 form-group mr-md-auto ml-md-auto ">
+            <input type="text" class="form-control" placeholder="XXX-XXX-XXXX" disabled>
+          </div>
+        </div>
+        <div class="custom-control custom-checkbox agents-checkbox">
+          <input type="checkbox" class="custom-control-input" id="customCheck1" disabled>
+          <label class="custom-control-label" for="customCheck1" style="padding-top: 4px;">By checking this box, I am providing consent to be sent an SMS Message with a link to the SpeakEasy mobile application.</label>
+        </div>
+        <div class="logo-center">
+          <button class="btn btn-primary agents-submit" disabled>Submit</button>
+        </div>
+        <div style="position: absolute; bottom: 0px; width: 100%; text-align: center; margin-bottom: 20px; margin-left: -20px;">
+          <a href="#">Privacy and Terms</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="cropLogoModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a New Logo</h5>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="inviteFileInput" accept="image/*" />
+        <div class="canvas-div">
+          <canvas id="inviteCanvas">
+            Your browser does not support HTML5
+          </canvas>
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="uploadInviteConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

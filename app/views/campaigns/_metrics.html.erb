@@ -1,0 +1,210 @@
+<div class="card card-tabbed  ">
+  <div class="card-header bg-dark text-white">
+    <h6>Metrics</h6>
+    <ul class="nav nav-tabs nav-tabs-primary card-header-tabs" id="my_tabs" role="tablist">
+      <li class = "nav-item active">
+        <a href="#one" class="nav-link active text-white" data-toggle="tab" role="tab" aria-controls="one" aria-expanded="true">
+        Active Campaigns
+        </a>
+      </li>
+      <li class = "nav-item">
+        <a href="#two" class="nav-link text-white" data-toggle="tab" role="tab" aira-controls="two" aria-expanded="false">
+        Future Campaigns
+        </a>
+      </li>
+      <li class = "nav-item">
+        <a href="#three" class="nav-link text-white" data-toggle="tab" role="tab" aira-controls="three" aria-expanded="false">
+        Past Campaigns
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    <div class="tab-content">
+      <div id="one" class="tab-pane fade show active" role="tabpanel1" aria-labelledby="one">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @active_campaigns.present? %>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Ends</th>
+                <th><center>Engagements</center></th>
+                <th><center>Impressions</center></th>
+                <th><center>Conversions</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @active_campaigns.each_with_index do |campaign, index| %>
+                  <tr>
+                    <td data-name='ellipsis'>
+                      <a href="<%= campaign_path(campaign) %>"><%= campaign.offer_title %> </a>
+                    </td>
+                    <td><%= campaign.run_date.strftime("%-m/%-d/%y") %></td>
+                    <% if @coupon_summ[campaign.objectId].present? %>
+                      <td>
+                        <center>
+                          <% if @coupon_summ[campaign.objectId][:reach] > 0 %>
+                            <%= @coupon_summ[campaign.objectId][:reach] %>
+                          <% else %>
+                            <%= @coupon_summ[campaign.objectId][:sent_coupons] %>
+                          <% end %>
+                        </center>
+                      </td>
+                      <td>
+                        <center>
+                          <% if @coupon_summ[campaign.objectId][:engagements] > 0 %>
+                            <%= @coupon_summ[campaign.objectId][:engagements] %>
+                          <% else %>
+                            <%= @coupon_summ[campaign.objectId][:viewed_coupons] %>
+                          <% end %>
+                        <center>
+                      </td>
+                      <td>
+                        <center>
+                          <% if @coupon_summ[campaign.objectId][:conversions] > 0 %>
+                            <%= @coupon_summ[campaign.objectId][:conversions] %>
+                          <% else %>
+                            <%= @coupon_summ[campaign.objectId][:success] %>
+                          <% end %>
+                        <center>
+                      </td>
+                    <% else %>
+                      <td><center>0</center></td>
+                      <td><center>0</center></td>
+                      <td><center>0</center></td>
+                    <% end %>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>Create a new campaign to start tracking</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+          <%= paginate @active_campaigns, :params => {:tab => "one"}, param_name: :active%>
+        </div>
+      </div>
+
+      <div id="two" class="tab-pane fade" role="tabpanel1" aria-labelledby="two">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @future_campaigns.present? %>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Starts</th>
+                <th>Ends</th>
+                <th><center>Engagements</center></th>
+                <th><center>Impressions</center></th>
+                <th><center>Conversions</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @future_campaigns.each_with_index do |campaign, index| %>
+                  <tr>
+                    <td data-name='ellipsis'>
+                      <a href="<%= campaign_path(campaign) %>"><%= campaign.offer_title %> </a>
+                    </td>
+                    <td><%= campaign.run_date.strftime("%-m/%-d/%y") %></td>
+                    <td><%= campaign.start_date.strftime("%-m/%-d/%y") %></td>
+                    <td><center>0</center></td>
+                    <td><center>0</center></td>
+                    <td><center>0</center></td>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>No Future Campaigns!</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+          <%= paginate @future_campaigns, :params => {:tab => "two"}, param_name: :future%>
+        </div>
+      </div>
+
+      <div id="three" class="tab-pane fade" role="tabpanel1" aria-labelledby="three">
+        <table class="table campaign-table table-sm font-size-small">
+          <% if @past_campaigns.present? %>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Ends</th>
+                <th><center>Engagements</center></th>
+                <th><center>Impressions</center></th>
+                <th><center>Conversions</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @past_campaigns.each_with_index do |campaign, index| %>
+                  <tr>
+                    <td data-name='ellipsis'>
+                      <a href="<%= campaign_path(campaign) %>"><%= campaign.offer_title %> </a>
+                    </td>
+                    <td><%= campaign.run_date.strftime("%-m/%-d/%y") %></td>
+                    <% if @coupon_summ[campaign.objectId].present? %>
+                    <td>
+                      <center>
+                        <% if @coupon_summ[campaign.objectId][:reach] > 0 %>
+                          <%= @coupon_summ[campaign.objectId][:reach] %>
+                        <% else %>
+                          <%= @coupon_summ[campaign.objectId][:sent_coupons] %>
+                        <% end %>
+                      </center>
+                    </td>
+                    <td>
+                      <center>
+                        <% if @coupon_summ[campaign.objectId][:engagements] > 0 %>
+                          <%= @coupon_summ[campaign.objectId][:engagements] %>
+                        <% else %>
+                          <%= @coupon_summ[campaign.objectId][:viewed_coupons] %>
+                        <% end %>
+                      <center>
+                    </td>
+                    <td>
+                      <center>
+                        <% if @coupon_summ[campaign.objectId][:conversions] > 0 %>
+                          <%= @coupon_summ[campaign.objectId][:conversions] %>
+                        <% else %>
+                          <%= @coupon_summ[campaign.objectId][:success] %>
+                        <% end %>
+                      <center>
+                    </td>
+                    <% else %>
+                      <td><center>0</center></td>
+                      <td><center>0</center></td>
+                      <td><center>0</center></td>
+                    <% end %>
+                  </tr>
+              <% end %>
+            </tbody>
+          <% else %>
+            <div class="no-campaigns">
+              <h6>No Past Campaigns</h6>
+            </div>
+          <% end %>
+        </table>
+        <div style="margin-top: 15px;">
+          <%= paginate @past_campaigns, :params => {:tab => "three"}, param_name: :past%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(function() {
+    $('a[data-toggle="tab"]').on('click', function(e) {
+        window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = window.localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('#my_tabs a[href="' + activeTab + '"]').tab('show');
+        window.localStorage.removeItem("activeTab");
+    }
+});
+</script>

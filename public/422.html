@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Failed to Process</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="//fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,900" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+
+<style>
+  html, body {
+    height: 100%;
+    background-color: #263238;
+  }
+
+  .error-card {
+    width: 50%;
+    height: 60%;
+    border-radius: 15px;
+    margin: 0px !important;
+  }
+
+  .left-side{
+    background-image: url("./images/signup_background.png");
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+
+    margin-top: -1px;
+    margin-bottom: -1px;
+
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+
+  .right-side{
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+
+  .error-title{
+    margin-bottom: 5px;
+    font-weight: 400;
+  }
+
+  .error-code{
+    font-weight: lighter !important;
+    margin-bottom: 50px;
+    font-size: 14px;
+  }
+
+  .logo-wrapper{
+    text-align: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .logo{
+    width: 70%;
+    top: 37%;
+    left: 15%;
+    position: absolute;
+  }
+</style>
+</head>
+
+<body>
+  <div class="container-fluid" style="height: 100vh; width: 100%;">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="card error-card">
+        <div class="row h-100">
+          <div class="col-12 col-md-4 left-side">
+            <div class="logo-wrapper">
+              <img src="./images/nav_logo_white.png" class="logo" />
+            </div>
+          </div>
+          <div class="col-12 col-md-8 right-side">
+            <div class="row h-100 justify-content-center align-items-center">
+              <div style="text-align: center;">
+                <h2 class="error-title">Failed to Process</h2>
+                <h5 class="error-code">Error 422</h5>
+                <span>
+                  Yikes! Looks like something is wrong with the servers. We are unable
+                  to process that request at the moment. Try again later.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

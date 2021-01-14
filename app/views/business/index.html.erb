@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-8 mr-auto ml-auto">
+      <div class="card">
+        <div class="card-body account_card">
+          <h5>Business</h5>
+          <p>Change business settings for your business account.</p>
+          <%= simple_form_for @business,
+                              :url => business_path, :method => :put,
+                              :html => {:class => 'form-horizontal business-form'},
+                              wrapper: :horizontal_form,
+                              wrapper_mappings: {
+                                  file: :horizontal_file_input,
+                              } do |f| %>
+              <hr>
+              <%= f.input :name, :label => 'Business Name', :required => true %>
+              <%= f.input :billing_email, :label => 'Billing Email', :required => true %>
+              <%= f.input :business_phone, :label => 'Business Phone', :required => true %>
+              <%= f.input :billing_street, :label => 'Billing Address' %>
+
+              <%= f.input :billing_suite, :label => 'Billing Suite' %>
+              <%= f.input :billing_city, :label => 'Billing City' %>
+              <%= f.input :billing_state, :label => 'Billing State' %>
+              <%= f.input :billing_zip, :label => 'Billing Zip' %>
+              <%= f.input :business_url, :label => 'Website URL', as: :string, input_html: {:placeholder => 'http://yoursite.com'} %>
+              <button id="upload-photo-button" style="margin-bottom: 30px;" type="button" class="btn btn-outline-primary agents-logo-button" data-target="#cropBusinessModal" data-toggle="modal" data-backdrop="static">
+                Change Logo
+              </button>
+              <% if @business.logo_url.present? %>
+                  <div class="form-group">
+                    <div class="col-sm-6 col-sm-offset-3" id="business_photo_preview">
+                      <div id="inviteBusinessLogo">
+                        <img class="business-logo" src="<%= @business.logo_url %>" alt="<%= "#{@business.name} logo" %>">
+                        <input type="hidden" id="business-url" value="<%= @business.logo_url %>" />
+                      </div>
+                    </div>
+                  </div>
+              <% else %>
+              <div id="inviteBusinessLogo">
+                <input type="hidden" id="business-url" />
+              </div>
+              <% end %>
+              <hr>
+              <div class="row">
+                <div class="col">
+                  <div class='float-right'>
+                    <%= f.button :submit, 'Save Changes', :class => 'btn btn-primary edit-submit-button' %>
+                  </div>
+                  <div class="edit-cancel-link float-right" style="margin-right: 75px; margin-top: 10px;">
+                    <%= link_to 'Cancel', :back %>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="cropBusinessModal" aria-labelledby="Are you ready">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload a New Logo</h5>
+      </div>
+      <div class="modal-body">
+        <input type="file" id="businessFileInput" accept="image/*" />
+        <p>
+          To zoom in and zoom out, use the page scrolling function over the photo.
+        </p>
+        <div class="canvas-div">
+          <canvas id="businessCanvas">
+            Your browser does not support HTML5
+          </canvas>
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="uploadCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="uploadBusinessConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

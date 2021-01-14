@@ -1,0 +1,41 @@
+<!-- Agent Card Partial -->
+<div class="col-6 col-md-4" style="margin-bottom: 20px;">
+  <div class="card h-100 d-flex flex-column justify-content-between">
+    <div class="row equal no-gutters">
+      <div class="col-4">
+        <div style="height: 100%;">
+          <img
+            src="<%= @user.photo_url.blank? ? image_path('no_photo3x.png') : @user.photo_url %>"
+            class="mini-card-image"
+            alt="Team Member Image"
+          />
+        </div>
+      </div>
+      <div class="col-8" style="padding-left: 20px; padding-right: 10px;">
+        <p class="mini-team-title"><%= @user.firstname %> <%= @user.lastname %></p>
+        <p class="mini-team-text"><%= Role::get_role_label(@user.role) %></p>
+          <div class="agent-label">
+            Location
+          </div>
+          <%= location_to_user_relations(@locations, @user.locations).presence || 'N/A' %>
+          <div class="agent-label">
+            Status
+          </div>
+          <div class="row no-gutters">
+            <div class="col-6">
+              <% if @user.is_active %>
+                  <h6 class="agent-active">Active</h6>
+              <% else %>
+                  <h6 class="agent-inactive">Inactive</h6>
+              <% end %>
+            </div>
+             <div class="col-6" style="">
+              <div style="text-right: right; float: right; padding-top: 20px;">
+                <a href="<%= account_path %>" class="card-button">Edit</a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

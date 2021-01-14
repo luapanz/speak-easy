@@ -1,0 +1,58 @@
+<div class="modal fade" id="AddUserModal" tabindex="-1" role="dialog" aria-labelledby="Payment Modal" show style="background: rgba(0, 0, 0, .7);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User License</h5>
+      </div>
+      <div class="modal-body">
+        <div class="add-user-area">
+          <div class="row">
+            <div class="col-6">
+              <h6 style="margin-top: 5px;">How Many Users:</h6>
+            </div>
+            <div class="col-6">
+              <div class="subscribe-quantity" style="text-align: center;">
+                <span class="minus bg-dark">-</span>
+                <input type="number" class="count" name="qty" value="<%= (7 + @extra_members)%>">
+                <span class="plus bg-dark">+</span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px; margin-bottom: 10px;">
+            <div class="col-6">
+              <h6 style="margin-top: 10px;">Cost Change($7/user)</h6>
+            </div>
+            <div class="col-6">
+              <div style="text-align: center">
+                <h4 class="added-cost" style="margin-top: 5px;">$0</h4>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 25px; margin-bottom: 10px;">
+            <div class="col-6">
+              <h6 style="margin-top: 16px;">Total Monthly Cost:</h6>
+            </div>
+            <div class="col-6">
+              <div style="text-align: center">
+                <h4 class="total-cost" style="margin-top: 5px;">$<%= 49 + (7*@extra_members) %></h4>
+                <!-- <% if @extra_members == 0 %>
+                  <h4 class="total-cost" style="margin-top: 5px;">$56</h4>
+                <% else %>
+                  <h4 class="total-cost" style="margin-top: 5px;">$<%= 49 + (7*@extra_members) + 7 %></h4>
+                <% end %> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="add-user-loader load6" style="height: 275px; width: 100%; text-align: center; display: none;">
+        <div class="loader">"Loading..."::after</div>
+        <span>Adding Users</span>
+      </div>
+      <div class="modal-footer add-user-footer">
+        <button type="button" class="btn btn-outline-primary float-left" data-dismiss="modal">Cancel</button>
+        <button class='btn btn-primary add-users-button'>Accept</button>
+      </div>
+    </div>
+  </div>
+</div>

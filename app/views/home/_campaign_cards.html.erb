@@ -1,0 +1,75 @@
+<% if @campaigns.present? %>
+<div class="row">
+  <div class="col-3">
+    <h5 class="location-header">Active Campaigns</h5>
+  </div>
+  <div class="col-9">
+    <a href="<%= new_announcement_path %>" class="btn btn-primary new-location-button float-right" style="margin-left: 10px">
+      + Team Announcement
+    </a>
+    <% if @locations.present? %>
+      <a href="<%= new_campaign_path %>" class="btn btn-primary new-location-button float-right">
+        + New Campaign
+      </a>
+    <% else %>
+      <a href="#" class="btn btn-primary new-location-button float-right" data-toggle="modal" data-target="#noLocationModal">
+        + New Campaign
+      </a>
+    <% end %>
+  </div>
+</div>
+<hr class="location_line"/>
+<div class="row">
+  <% @campaigns.each do |campaign| %>
+    <% if DateTime.now < campaign.run_date %>
+    <div class="col-12 col-md-3">
+      <div class="card">
+        <div style="height: 100%;">
+          <% if campaign.photo_url.present? %>
+            <img
+              src="<%= campaign.photo_url %>"
+              class="new-campaign-image-card-image"
+              alt="Campaign Image"
+            />
+          <% else %>
+            <img
+              src="<%= asset_path('generic_campaign.png') %>"
+              alt="Campaign Image"
+            />
+          <% end %>
+        </div>
+        <div class="new-campaign-image-card-bottom-box">
+          <h6 style="overflow: hidden; white-space: nowrap;">
+            <% if campaign.offer_title.present? %>
+              <a class="new-campaign-image-card-bottom-text" href="<%= campaign_path(campaign) %>"><%= campaign.offer_title %></a>
+            <% else %>
+              <a class="new-campaign-image-card-bottom-text" href="<%= campaign_path(campaign) %>">Campaign</a>
+            <% end %>
+          </h6>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="noLocationModal" tabindex="-1" role="dialog" aria-labelledby="Missing Location">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Missing a Location</h4>
+      </div>
+      <div class="modal-body">
+        <p class="card-text">
+          Before you can create your first Campaign you must create a Location.
+          To do this, simply go to the left side of your web page and click on Locations.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="noLocationAccept">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

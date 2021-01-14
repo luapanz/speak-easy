@@ -1,0 +1,46 @@
+<div class="container-fluid signup_main">
+  <!-- OGP For Text Messages invitations; -->
+  <meta property="og:title" content="SpeakEasy Mobile App" />
+  <meta property="og:description" content="Download the SpeakEasy App to join your team account today. Communicate with fellow team members and share greate content, news, and opportunities with your personal networks." />
+  <meta property="og:image" content="<%= asset_path('pulls-logo-black@2x.png') %>" />
+
+
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-center mt-5 flex-column" style="margin-top: 25px; margin-bottom: 45px;">
+        <img src="<%= asset_path('pulls-logo-black@2x.png') %>" width="150">
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-md-6 mr-md-auto ml-md-auto ">
+        <div class="card" style="padding-bottom: 20px;">
+          <div class="card-header">
+            <p class="agent-signup-header" style="text-align: center; color: #182FD1; width: 100%;">Signing up for SpeakEasy is Easy!</p>
+          </div>
+          <div class="card-body">
+            <div class="row" style="padding-left: 20px; padding-right: 20px;">
+              <p style="text-align: center; width: 100%; font-size: 24px;">To sign up, use the mobile application</p>
+              <p style="text-align: center; width: 100%; font-size: 16px;">
+                To receive a Text Message with a link for the App, enter your phone number below.
+              </p>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+              <div class="form-group col-4 mr-md-auto ml-md-auto">
+                <input class="form-control" style="width: 100%;" name="signupNumber" id="signupNumber" type="number" placeholder="Phone Number">
+                <input name="business" id="business" value="<%= @businessId %>" type="hidden" />
+                <input name="location" id="location" value="<%= @location %>" type="hidden" />
+              </div>
+            </div>
+            <div style="width: 100%; text-align: center;">
+              <button class="btn btn-primary signup-text" name="signup-text" id="signup-text">
+                Send Text
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

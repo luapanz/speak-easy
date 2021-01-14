@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-12 col-md-11 mr-auto ml-auto">
+    <div class="card">
+      <div class="card-body account_card">
+        <h5>Select your Plan</h5>
+        <div class="plan-selector">
+          <form action="" style="margin-bottom: 0px;">
+            <div class="form-check">
+              <label class="custom-control custom-radio">
+                <input name="plan-level" type="radio" class="custom-control-input" value="<%=@small_plan.objectId %>">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description d-flex w-100">
+                  <div class="details">
+                    <div class="plan-name"><%= @small_plan.name %></div>
+                    <div class="plan-description"><%= @small_plan.users %> User License</div>
+                  </div>
+                  <div class="price">
+                    $<%= @small_plan.cost %>/mo
+                  </div>
+                </span>
+              </label>
+            </div>
+            <!-- <div class="form-check">
+              <label class="custom-control custom-radio">
+                <input name="plan-level" type="radio" class="custom-control-input" value="<%=@medium_plan.objectId %>">
+                <div class="highlight"></div>
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description d-flex w-100">
+                  <div class="details">
+                    <div class="plan-name"><%= @medium_plan.name %></div>
+                    <div class="plan-description"><%= @medium_plan.users %> User License, <%= @medium_plan.physical %> Physical Locations, <%= @medium_plan.virtual %> Virtual Locations</div>
+                  </div>
+                  <div class="price">
+                    $<%= @medium_plan.cost %>/mo
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="custom-control custom-radio">
+                <input name="plan-level" type="radio" class="custom-control-input" value="<%=@large_plan.objectId %>">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description d-flex w-100">
+                  <div class="details">
+                    <div class="plan-name"><%= @large_plan.name %></div>
+                    <div class="plan-description"><%= @large_plan.users %> User License, <%= @large_plan.physical %> Physical Locations, <%= @large_plan.virtual %> Virtual Locations</div>
+                  </div>
+                  <div class="price">
+                    $<%= @large_plan.cost %>/mo
+                  </div>
+                </span>
+              </label>
+            </div> -->
+            <input type="hidden" class="userinfo" value="<%= @user.business_id %>" />
+          </form>
+          <div class="row enterprise-div">
+            <p>For Enterprise, please <a href="https://share.hsforms.com/1enNaHfcSSoa1ey0ptPk5iQ3dadz">Contact Us</a> for higher limits.</p>
+          </div>
+          <div class="row" style="margin-top: 15px;">
+            <div class="col">
+              <div class='float-right'>
+                <button class='btn btn-primary update-button'>Subscribe</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%= render partial: 'billing/payment_modal' %>

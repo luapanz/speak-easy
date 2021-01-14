@@ -1,0 +1,35 @@
+<div class="container-fluid login_main">
+  <div class="row h-100 justify-content-center align-items-center">
+    <div class="card login-card">
+      <div class="row h-100">
+        <div class="col-12 col-md-4 signup-left">
+          <div class="row h-100 justify-content-center align-items-center login-left">
+            <div class="login-image-wrap">
+              <img src="<%= asset_path('nav_logo_white.png') %>" class="signup-image">
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-8 signup-right">
+          <div class="row h-100 justify-content-center align-items-center login-right">
+            <%= form_tag login_path, :method => :post, class: 'login-form' do %>
+              <div class="row justify-content-center login-header">
+                <h3>Login</h3>
+              </div>
+              <%= text_field_tag :username, nil, :placeholder => 'Email', :class => 'login-input', :required => true %>
+              <%= password_field_tag :password, nil, :placeholder => 'Password', :class => 'login-input', :required => true %>
+              <div class="row justify-content-center">
+                <button type="submit" class="btn login-button">SIGN IN</button>
+              </div>
+              <div class="login__forgot"><%= link_to 'Lost your password?', restore_url %></div>
+              <div class="row justify-content-center">
+                <div class="login-create">
+                  <p>New to SpeakEasy? <a href="/signup">Create Account</a></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

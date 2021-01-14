@@ -1,0 +1,29 @@
+<div class="modal fade" id="PaymentModal" tabindex="-1" role="dialog" aria-labelledby="Payment Modal" show style="background: rgba(0, 0, 0, .7);">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Enter Credit Card Information</h5>
+      </div>
+      <div class="modal-body">
+        <div class="stripe_payment_section">
+          <form action="billing/subscribe" method="post" id="payment-form">
+            <div id="card-element">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+
+            <!-- Used to display Element errors. -->
+            <div id="card-errors" role="alert"></div>
+          </form>
+        </div>
+        <div class="load-container load6" style="height: 275px; width: 100%; text-align: center; display: none;">
+          <div class="loader">"Loading..."::after</div>
+          <span>Processing Card</span>
+        </div>
+      </div>
+      <div class="modal-footer sub-modal-footer">
+        <button type="button" class="btn btn-outline-primary float-left" data-dismiss="modal">Cancel</button>
+        <button class='btn btn-primary purchase-button'>Purchase</button>
+      </div>
+    </div>
+  </div>
+</div>
