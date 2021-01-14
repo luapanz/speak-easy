@@ -1,6 +1,6 @@
 ### Overview
 This repository is the Web App for Speak Easy. It is hosted on Amazon Web Services
-and can be found at justspeakeasy.com. This project manages accounts and
+and can be found at justpeakeasy.com. This project manages accounts and
 launches online campaigns.
 ---
 
